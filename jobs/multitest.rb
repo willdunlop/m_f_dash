@@ -10,7 +10,7 @@ points2 = []
 end
 last_x = points1.last[:x]
 
-SCHEDULER.every '2s' do
+SCHEDULER.every '30s' do
   points1.shift
   points2.shift
   last_x += 1

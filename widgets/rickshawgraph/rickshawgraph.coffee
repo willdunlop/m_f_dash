@@ -133,9 +133,10 @@ class Dashing.Rickshawgraph extends Dashing.Widget
 
     graphOptions = {
       element:  $graph.get(0),
-      renderer: @getRenderer(),
+      renderer: 'multi',
       width:    width,
       height:   height,
+      stroke:   true,
       series:   series
     }
 

@@ -4,7 +4,7 @@ class Dashing.Mgraph extends Dashing.Widget
     return @get('displayedValue') if @get('displayedValue')
     points = @get('points')
     if points
-      points[0][points[0].length - 1].y + ' / ' + points[1][points[1].length - 1].y 
+      points[0][points[0].length - 1].y + ' / ' + points[1][points[1].length - 1].y
 
   ready: ->
     container = $(@node).parent()
@@ -15,16 +15,16 @@ class Dashing.Mgraph extends Dashing.Widget
       element: @node
       width: width
       height: height
-      renderer: 'area'
-      stroke: false
+      renderer: 'line'
+      stroke: true
       series: [
         {
-        color: "#fff",
-        data: [{x:0, y:0}]
+          color: "#fff",
+          data: [{x:0, y:0}]
         },
         {
-            color: "#222",
-            data: [{x:0, y:0}]
+          color: "#fff",
+          data: [{x:0, y:0}]
         }
       ]
     )
