@@ -1,10 +1,10 @@
-class Dashing.Graph extends Dashing.Widget
+class Dashing.Mgraph extends Dashing.Widget
 
   @accessor 'current', ->
     return @get('displayedValue') if @get('displayedValue')
     points = @get('points')
     if points
-      points[points.length - 1].y
+      points[0][points[0].length - 1].y + ' / ' + points[1][points[1].length - 1].y
 
   ready: ->
     container = $(@node).parent()
@@ -15,24 +15,29 @@ class Dashing.Graph extends Dashing.Widget
       element: @node
       width: width
       height: height
-      renderer: @get("graphtype")
+      renderer: 'line'
       stroke: true
       series: [
         {
-        color: "#fff",
-        data: [{x:0, y:0}]
+          color: "#fff",
+          data: [{x:0, y:0}]
+        },
+        {
+          color: "#fff",
+          data: [{x:0, y:0}]
         }
       ]
-      padding: {top: 0.02, left: 0.02, right: 0.02, bottom: 0.02}
     )
 
     @graph.series[0].data = @get('points') if @get('points')
 
     x_axis = new Rickshaw.Graph.Axis.Time(graph: @graph)
     y_axis = new Rickshaw.Graph.Axis.Y(graph: @graph, tickFormat: Rickshaw.Fixtures.Number.formatKMBT)
+    @graph.renderer.unstack = true
     @graph.render()
 
   onData: (data) ->
     if @graph
-      @graph.series[0].data = data.points
+      @graph.series[0].data = data.points[0]
+      @graph.series[1].data = data.points[1]
       @graph.render()
