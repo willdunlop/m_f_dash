@@ -1,59 +1,60 @@
 #!/usr/bin/env ruby
+#
+#                Final Version
+##############################
+### JOB FOR BURNDOWN CHART ###
+##############################
+#                   10/01/2017
 require 'rest-client'
 require 'json'
 require 'date'
 
-# a small change
-now = DateTime.now
+#Environment variables for access the repo through API
 git_token = ENV["GIT_TOKEN"]
 git_owner = ENV["GIT_OWNER"]
 git_project = ENV["GIT_PROJECT"]
-#git_issue_label = "03.Proposal"
 
-## Change this if you want to run more than one set of issue widgets
 
-## the endpoint we'll be hitting
+
+## the endpoints for github open issues
 uri = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=open&page=1&per_page=100&access_token=#{git_token}"
-
 uri2 = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=open&page=2&per_page=100&access_token=#{git_token}"
-#add the following after state=open if desired
-
+## the endpoints for github closed issues
 uriClosed1 = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=closed&page=1&per_page=100&access_token=#{git_token}"
-
 uriClosed2 = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=closed&page=2&per_page=100&access_token=#{git_token}"
-#&labels=#{git_issue_label}
-
+#the endpoint for github milestone data
 uriMilestone = "https://api.github.com/repos/#{git_owner}/#{git_project}/milestones?page=1&per_page=100&access_token=#{git_token}"
-
+#counter used for debugging
 refCount = 0
+###Variable for defining what sprint is shown##
+currentMilestone = 7
+
+puts "\e[38;5;182mMENTALLY FRIENDLY PROJECT DASHBOARD\e[0m"
+puts "\e[94mRefresh for #{git_project} count: \e[32m#{refCount}\e[0m"
+puts "\e[94mCurrent Milstone: \e[32m#{currentMilestone}\e[0m"
+puts "\e[34mCalculating sprint date range\e[0m"
+puts "\e[94mToday: #{Date.new}\e[0m"
 
 SCHEDULER.every '10s', :first_in => 0 do |job|
+    #Retrieves data from API and formats it
     puts "\e[34mGetting #{uri} and #{uri2}\e[0m"
     firstResponse = RestClient.get uri
     secondResponse = RestClient.get uri2
     issuesPage1 = JSON.parse(firstResponse.body, symbolize_names: true)
     issuesPage2 = JSON.parse(secondResponse.body, symbolize_names: true)
-
     puts "\e[34mGetting #{uriClosed1} and #{uriClosed2}\e[0m"
     thirdResponse = RestClient.get uriClosed1
     fourthResponse = RestClient.get uriClosed2
     cIssuesPage1 = JSON.parse(thirdResponse.body, symbolize_names: true)
     cIssuesPage2 = JSON.parse(fourthResponse.body, symbolize_names: true)
-
     puts "\e[34mGetting #{uriMilestone}\e[0m"
     mileResponse = RestClient.get uriMilestone
     mileData = JSON.parse(mileResponse.body, symbolize_names: true)
 
-
-    currentMilestone = 7
-    currentMileOpen = []
+    #Stores open and closed issues respectively
+    currentOpenIssues = 0
     currentMileClosed = []
     refCount = refCount + 1
-    puts "\e[38;5;182mMENTALLY FRIENDLY PROJECT DASHBOARD\e[0m"
-    puts "\e[94mRefresh for #{git_project} count: \e[32m#{refCount}\e[0m"
-    puts "\e[94mCurrent Milstone: \e[32m#{currentMilestone}\e[0m"
-    puts "\e[34mCalculating sprint date range\e[0m"
-    puts "\e[94mToday: #{now}\e[0m"
     mileData.length.times do |num|
       if mileData[num][:number] == currentMilestone
         puts "\e[94mMilestone Due: #{mileData[num][:due_on]}\e[0m"
@@ -64,7 +65,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
     issuesPage1.length.times do |i|
       if issuesPage1[i][:milestone] != nil
         if issuesPage1[i][:milestone][:number] == currentMilestone
-            currentMileOpen << 1
+          currentOpenIssues = currentOpenIssues + 1
         end
       end
     end
@@ -74,7 +75,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
     issuesPage2.length.times do |x|
       if issuesPage2[x][:milestone] != nil
         if issuesPage2[x][:milestone][:number] == currentMilestone
-            currentMileOpen << 1
+          currentOpenIssues = currentOpenIssues + 1
         end
       end
     end
@@ -105,9 +106,9 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
     puts "\e[34mRetreiving Closed Issues from page 2\e[0m"
 
 
-    open_issues = currentMileOpen.count
+    #open_issues = currentOpenIssues.count
     closed_issues = currentMileClosed.count
-    all_issues = open_issues + closed_issues
+    all_issues = currentOpenIssues + closed_issues
 
 
     ## Drop the first point value and increment x by 1
@@ -133,38 +134,71 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
   puts "\e[94mStart of sprint #{currentMilestone}: #{mileDue - 11}\e[0m"
   puts "\e[94mEnd of Sprint #{currentMilestone}: #{mileDue}\e[0m"
 
-  optimal_issues = all_issues.to_f / 14
+  optimal_issues = all_issues.to_f / 11
   def points_array(all, optimal)
-      @expect = []
+      @expect = [all]
       until all < 0
         all = all - optimal
         @expect << all
       end
-      #puts expect
+
     end
     points_array(all_issues , optimal_issues)
 
 
-   dateRange = []
+   dateRangeRev = []
    eaDay = 0
    until eaDay == 12
      mileDueStr = mileDue - eaDay
-     dateRange << mileDueStr.to_s
+     dateRangeRev << mileDueStr.to_s
      eaDay = eaDay + 1
    end
-   puts "Closed date arr: #{issClosedDate}"
+   dateRange = dateRangeRev.reverse
    #for each date in issClosedDate find it's position in dateRange
+
+   dataPos = []
+   #creates template burndown data array
+   actual = Array.new(12, all_issues)
    issClosedDate.length.times do |eaClosed|
      dateRange.length.times do |eaDate|
       if issClosedDate[eaClosed] == dateRange[eaDate]
-        puts "Its positiong is: #{dateRange[eaDate].index}"
+        dataPos << eaDate
       end
     end
   end
 
-   puts "DATES ARE: #{dateRange}"
-   puts "I must know: #{Array.new(dateRange.length) { rand(40..80) }}"
 
+  #The following loop updates the burndown array data to match closed issues with dates respectively
+  dataPos.length.times do |eaPos|
+    newTotal = actual[eaPos].to_i - 1
+
+    #replaces the old value with the new
+    actual.delete_at(dataPos[eaPos].to_i)
+    actual.insert(dataPos[eaPos].to_i, newTotal)
+
+    newArr = []
+    #Corrects the open amount and puts into a new array
+    actual[eaPos+1..11].each do |correction|
+      newArr << correction - 1
+    end
+
+    #removes each outdated element in array
+    (eaPos+1..11).reverse_each do |rem|
+      actual.delete_at(rem)
+      #puts rem
+      #puts "Mini Actual: #{actual}"
+    end
+    #adds the updated amounts
+    actual.insert(eaPos+1, newArr)
+    #puts "NEW ACTUAL: #{actual.flatten}"
+    actual = actual.flatten
+  end
+
+  #Debugging
+   #puts "DATES ARE: #{dateRange}"
+   puts "\e[94mBurndown Data: #{actual}\e[0m"
+
+   # Sets the data variable
     data = [
         {
           label: 'Expected',
@@ -174,7 +208,8 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
           borderWidth: 1,
         }, {
           label: 'Second dataset',
-
+          #data: needs to be an array that removes amount from all issues at the correct position
+          data: actual,
           backgroundColor: [ 'rgba(255, 206, 86, 0.2)' ] * dateRange.length,
           borderColor: [ 'rgba(255, 206, 86, 1)' ] * dateRange.length,
           borderWidth: 1,
@@ -186,21 +221,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
 
     send_event('burn', { labels: dateRange, datasets: data })
 
-    #send_event("burn", points: [expected, actual])
 
-    # series = [
-    #   {
-    #     name: "Expected",
-    #     data: straight_data,
-    #     renderer: 'line'
-    #   },
-    #   {
-    #     name: "Actual",
-    #     data: test_data,
-    #     renderer: 'line'
-    #   }
-    # ]
-    #
-    # send_event(event_name, series: series)
+
 
 end # SCHEDULER
