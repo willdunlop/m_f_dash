@@ -12,6 +12,8 @@ $moreinfo-color:    rgba(255, 255, 255, 0.7);
 .widget-text {
 
   background-color: $background-color;
+  text-align: left;
+  font-weight: lighter;
 
   .title {
     color: $title-color;
@@ -28,5 +30,6 @@ $moreinfo-color:    rgba(255, 255, 255, 0.7);
 
   &.large h3 {
     font-size: 65px;
+    text-align: left;
   }
 }

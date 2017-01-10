@@ -202,5 +202,4 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
     #
     # send_event(event_name, series: series)
 
-
 end # SCHEDULER
