@@ -37,6 +37,7 @@ puts "\e[94mToday: #{Date.today.to_s}\e[0m
 SCHEDULER.every '10s', :first_in => 0 do |job|
 
     refCount = refCount + 1
+    puts "\e[90m=\e[0m" * 20
     puts "\e[36mSCHEDULAR: #{refCount} refreshes so far...\e[0m"
     #Retrieves data from API and formats it
     puts "\e[34mGetting page 1 and 2 for open issues\e[0m"
@@ -52,7 +53,6 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
     puts "\e[34mGetting milestone data\e[0m"
     mileResponse = RestClient.get uriMilestone
     mileData = JSON.parse(mileResponse.body, symbolize_names: true)
-
     #Stores open and closed issues respectively
     currentOpenIssues = 0
     currentClosedIssues = 0
