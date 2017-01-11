@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 #
-#                Final Version
-##############################
-### JOB FOR BURNDOWN CHART ###
-##############################
-#                   10/01/2017
+#        Final Version
+######################
+### GIT ISSUES JOB ###
+######################
+#           11/01/2017
 require 'rest-client'
 require 'json'
 require 'date'
@@ -32,28 +32,31 @@ puts "\e[38;5;182mMENTALLY FRIENDLY PROJECT DASHBOARD\e[0m"
 puts "\e[94mRefresh for #{git_project} count: \e[32m#{refCount}\e[0m"
 puts "\e[94mCurrent Milstone: \e[32m#{currentMilestone}\e[0m"
 puts "\e[34mCalculating sprint date range\e[0m"
-puts "\e[94mToday: #{Date.new}\e[0m"
-
+puts "\e[94mToday: #{Date.today.to_s}\e[0m
+"
 SCHEDULER.every '10s', :first_in => 0 do |job|
+
+    refCount = refCount + 1
+    puts "\e[36mSCHEDULAR: #{refCount} refreshes so far...\e[0m"
     #Retrieves data from API and formats it
-    puts "\e[34mGetting #{uri} and #{uri2}\e[0m"
+    puts "\e[34mGetting page 1 and 2 for open issues\e[0m"
     firstResponse = RestClient.get uri
     secondResponse = RestClient.get uri2
     issuesPage1 = JSON.parse(firstResponse.body, symbolize_names: true)
     issuesPage2 = JSON.parse(secondResponse.body, symbolize_names: true)
-    puts "\e[34mGetting #{uriClosed1} and #{uriClosed2}\e[0m"
+    puts "\e[34mGetting page 1 and 2 for closed issues\e[0m"
     thirdResponse = RestClient.get uriClosed1
     fourthResponse = RestClient.get uriClosed2
     cIssuesPage1 = JSON.parse(thirdResponse.body, symbolize_names: true)
     cIssuesPage2 = JSON.parse(fourthResponse.body, symbolize_names: true)
-    puts "\e[34mGetting #{uriMilestone}\e[0m"
+    puts "\e[34mGetting milestone data\e[0m"
     mileResponse = RestClient.get uriMilestone
     mileData = JSON.parse(mileResponse.body, symbolize_names: true)
 
     #Stores open and closed issues respectively
     currentOpenIssues = 0
     currentClosedIssues = 0
-    refCount = refCount + 1
+
     mileData.length.times do |num|
       if mileData[num][:number] == currentMilestone
         puts "\e[94mMilestone Due: #{mileData[num][:due_on]}\e[0m"
@@ -137,9 +140,23 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
    end
    dateRange = dateRangeRev.reverse
 
-   dataPos = []
+  #  dataPos = []
    #creates template burndown data array
-   actual = Array.new(12, all_issues)
+  #     = [all_issues]
+
+   #puts "DATES ARE: #{dateRange}"
+  # puts "Today: #{Date.today.to_s}"
+
+# Check Date of today and match it to array position in dateRange
+
+  dateRange.length.times do |ed|
+    if dateRange[ed] == Date.today.to_s
+      @actual = Array.new(ed+1, all_issues)
+    end
+  end
+
+  dataPos = []
+   #array containing closed date data array positions
    issClosedDate.length.times do |eaClosed|
      dateRange.length.times do |eaDate|
       if issClosedDate[eaClosed] == dateRange[eaDate]
@@ -148,56 +165,65 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
     end
   end
 
-
   #The following loop updates the burndown array data to match closed issues with dates respectively
   dataPos.length.times do |eaPos|
-    newTotal = actual[eaPos].to_i - 1
+    newTotal = @actual[eaPos].to_i - 1
 
     #replaces the old value with the new
-    actual.delete_at(dataPos[eaPos].to_i)
-    actual.insert(dataPos[eaPos].to_i, newTotal)
+    @actual.delete_at(dataPos[eaPos].to_i)
+    @actual.insert(dataPos[eaPos].to_i, newTotal)
 
     newArr = []
     #Corrects the open amount and puts into a new array
-    actual[eaPos+1..11].each do |correction|
+    @actual[eaPos+1..@actual.length].each do |correction|
       newArr << correction - 1
     end
 
-    #removes each outdated element in array
-    (eaPos+1..11).reverse_each do |rem|
-      actual.delete_at(rem)
+  #   #removes each outdated element in array
+    (eaPos+1..@actual.length).reverse_each do |rem|
+      @actual.delete_at(rem)
       #puts rem
-      #puts "Mini Actual: #{actual}"
+      #puts "Mini Actual: #{@actual}"
     end
-    #adds the updated amounts
-    actual.insert(eaPos+1, newArr)
-    #puts "NEW ACTUAL: #{actual.flatten}"
-    actual = actual.flatten
+  #   #adds the updated amounts
+    @actual.insert(eaPos+1, newArr)
+    #puts "NEW ACTUAL: #{@actual.flatten}"
+    @actual = @actual.flatten
   end
-
+  #
+  #   actual.delete_at(11)
   #Debugging
-   #puts "DATES ARE: #{dateRange}"
-   puts "\e[94mBurndown Data: #{actual}\e[0m"
+
+
+   puts "\e[94mBurndown Data: #{@actual}\e[0m"
 
    # Sets the data variable
     data = [
         {
+          label: 'Second dataset',
+          #data: needs to be an array that removes amount from all issues at the correct position
+          data: @actual,
+          backgroundColor: [ 'rgba(255, 206, 86, 0.2)' ] * dateRange.length,
+          borderColor: [ 'rgba(255, 206, 86, 1)' ] * dateRange.length,
+          borderWidth: 1,
+          lineTension: 0
+
+        }, {
           label: 'Expected',
           data: @expect,
           backgroundColor: [ 'rgba(255, 99, 132, 0.2)' ] * dateRange.length,
           borderColor: [ 'rgba(255, 99, 132, 1)' ] * dateRange.length,
-          borderWidth: 1,
-        }, {
-          label: 'Second dataset',
-          #data: needs to be an array that removes amount from all issues at the correct position
-          data: actual,
-          backgroundColor: [ 'rgba(255, 206, 86, 0.2)' ] * dateRange.length,
-          borderColor: [ 'rgba(255, 206, 86, 1)' ] * dateRange.length,
-          borderWidth: 1,
+          borderWidth: 2,
+          lineTension: 0,
+          pointRadius: 0
+
         }
       ]
 
     ## Push the most recent point value
     send_event('burn', { labels: dateRange, datasets: data })
+    send_event('open_iss', {text: currentOpenIssues })
+    send_event('closed_iss', {text: currentClosedIssues })
+
 
 end # SCHEDULER

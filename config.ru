@@ -19,6 +19,10 @@ get '/sample' do
     erb :sprint_goals_edit
 end
 
+get '/sampletv' do
+    request.path_info 
+end
+
 post '/sample' do
   goal1 = params[:goal1]
   goal2 = params[:goal2]

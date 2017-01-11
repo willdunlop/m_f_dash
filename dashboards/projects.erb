@@ -1,0 +1,69 @@
+<% content_for :title do %>My super sweet dashboard<% end %>
+<div class="gridster">
+
+  <script type='text/javascript'>
+  
+
+    $(function() {
+      $('li').live('click', function(e){
+        var widget = $(this).find('.widget');
+        var url = widget.data('url');
+        window.location = url;
+      });
+    });
+  </script>
+
+  <ul>
+
+
+      <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+        <div data-id="welcome" data-view="Text" data-title="Primex" data-text="Click this widget to view the primex dashboard" data-url="/sampletv"></div>
+      </li>
+
+      <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+        <div data-id="welcome" data-view="Text" data-title="Sample" data-text="Click this widget to view the sample dashboard" data-url="/sample"></div>
+      </li>
+
+
+
+
+  </ul>
+  <center><div style="font-size: 12px">wuddup</div></center>
+</div>
+
+
+<script type='text/javascript'>
+$(function() {
+    Dashing.gridsterLayout('[{"col":2,"row":1,"size_x":1,"size_y":1},{"col":1,"row":1,"size_x":1,"size_y":1},' +
+        '{"col":4,"row":1,"size_x":2,"size_y":1},{"col":2,"row":3,"size_x":1,"size_y":1},{"col":1,"row":2,' +
+        '"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":1,"size_y":1},{"col":3,"row":3,"size_x":1,"size_y":1}' +
+        ',{"col":3,"row":2,"size_x":2,"size_y":1},{"col":1,"row":3,"size_x":1,"size_y":1},{"col":2,' +
+        '"row":2,"size_x":1,"size_y":1},{"col":5,"row":2,"size_x":1,"size_y":1},{"col":4,"row":3,' +
+        '"size_x":2,"size_y":1}]');
+    Dashing.widget_base_dimensions = [370, 340];
+    Dashing.numColumns = 5;
+});
+
+
+function editTheWidgets() {
+    var myHash = parseURL(location.href).hash;
+    if (myHash === 'edit') {
+        Dashing.widget_base_dimensions = [370, 340];
+        Dashing.numColumns = 5;
+        editWidgets.onReady();
+        Dashing.gridsterLayout('[{"col":1,"row":7,"size_x":1,"size_y":1},{"col":1,"row":8,"size_x":1,"size_y":1},' +
+            '{"col":1,"row":1,"size_x":2,"size_y":1},{"col":1,"row":4,"size_x":1,"size_y":1},' +
+            '{"col":1,"row":9,"size_x":1,"size_y":1},{"col":1,"row":6,"size_x":1,"size_y":1},' +
+            '{"col":1,"row":7,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":2,"size_y":1},' +
+            '{"col":1,"row":10,"size_x":1,"size_y":1},{"col":1,"row":5,"size_x":1,"size_y":1},' +
+            '{"col":1,"row":6,"size_x":1,"size_y":1},{"col":1,"row":2,"size_x":2,"size_y":1}]');
+        }
+}
+
+setTimeout(editTheWidgets, 3000);
+</script>
+
+
+curl -X GET https://api.10000ft.com/api/v1/projects \
+  -H "Content-Type: application/json" \
+  -H "auth: eFNtTkgyYzdqSlpFVWVVNkJ2MWkrZHREQWxzbnRNbUFacFFxd0p    qdUMzcGlKRmFOa0htODYwM1lXRUhGCndSNzZPRWdKQ3l6ZXc3bnhnRExYUW5HZ1hCS0FG    blpDMFIrLzNOd1JBSzhQenlTa0dsOXlxSlBwd0YydgpmWTRSdUhLTwo="
