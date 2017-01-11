@@ -22,7 +22,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
 
   #projectPage[:data].length.times do |i|
     if projectPage[:data][0][:client] = project
-      puts "\e[31m#{projectPage[:data][0][:thumbnail]}\e[0m"
+      #puts "\e[31m#{projectPage[:data][0][:thumbnail]}\e[0m"
       @image = projectPage[:data][0][:thumbnail]
     end
 #  end
