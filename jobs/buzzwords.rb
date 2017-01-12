@@ -1,5 +1,6 @@
 
 
+
 SCHEDULER.every '20s' do
   sprintarray = File.read('./assets/sprint_goals.rb').split(',')
   checks = File.read('./assets/tickboxes.rb').split(',')
@@ -33,3 +34,4 @@ end
 #   # puts buzzword_counts.values
 #   send_event('buzzwords', { items: buzzword_counts.values })
 # end
+
