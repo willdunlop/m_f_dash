@@ -40,6 +40,24 @@ html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
 }
+// EDIT FORM //
+.txtbox {
+  font-size:12pt;
+     height:20px;
+     width:400px;
+  margin-left: 10vw;
+}
+
+.checkinform {
+  margin-left: 10vw;
+  height: 20px;
+  font-size: 12pt;
+}
+
+.submit {
+  align: center;
+  
+}
 
 body {
   margin: 0;
@@ -150,6 +168,10 @@ h3 {
   display: table-cell;
   vertical-align: middle;
 }
+.status-warning {
+  background-color: $background-warning-color-1;
+  @include animation(status-warning-background, 2s, ease, infinite);
+}
 
 .widget.status-warning {
   background-color: $background-warning-color-1;
@@ -255,4 +277,3 @@ h3 {
 .clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; overflow: hidden; }
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
-
