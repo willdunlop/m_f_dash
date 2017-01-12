@@ -32,3 +32,18 @@
 "client":"PrimeX Connect",
 "project_state":"Confirmed",
 "tags"
+
+
+
+
+curl -X GET https://api.10000ft.com/api/v1/projects \
+  -H "Content-Type: application/json" \
+  -H "auth: eFNtTkgyYzdqSlpFVWVVNkJ2MWkrZHREQWxzbnRNbUFacFFxd0p    qdUMzcGlKRmFOa0htODYwM1lXRUhGCndSNzZPRWdKQ3l6ZXc3bnhnRExYUW5HZ1hCS0FG    blpDMFIrLzNOd1JBSzhQenlTa0dsOXlxSlBwd0YydgpmWTRSdUhLTwo="
+
+
+
+
+
+  <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+    <div id="proj_card" data-id="welcome" data-view="Text" data-title="Primex" data-text="Click this widget to view the primex dashboard" data-url=""></div>
+  </li>

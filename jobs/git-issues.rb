@@ -200,7 +200,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
    # Sets the data variable
     data = [
         {
-          label: 'Second dataset',
+          label: 'Actual',
           #data: needs to be an array that removes amount from all issues at the correct position
           data: @actual,
           backgroundColor: [ 'rgba(255, 206, 86, 0.2)' ] * dateRange.length,

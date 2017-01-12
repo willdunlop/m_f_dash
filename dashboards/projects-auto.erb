@@ -1,29 +1,48 @@
 <% content_for :title do %>My super sweet dashboard<% end %>
-<link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
 
-<script type='text/javascript'>
+  <% tenk_token = ENV["TENK_TOKEN"]%>
+  <% uriProjects = "https://api.10000ft.com/api/v1/projects?filter_field=project_state=active&per_page=100&auth=#{tenk_token}"%>
 
-</script>
+  <%tenResponse = RestClient.get uriProjects%>
+  <%projectPage = JSON.parse(tenResponse.body, symbolize_names: true) %>
+
+<div class="gridster">
+
+  <script type='text/javascript'>
+
+    $(function() {
+      $('li').live('click', function(e){
+        var widget = $(this).find('.widget');
+        var url = widget.data('url');
+        window.location = url;
+      });
+    });
+
+  </script>
 
 
-<form id="add_card" action="/projects" method="POST" >
-  <input type="text" name="proj_name" placeholder="Project Name"></input>
-  <input type="text" name="proj_git" placeholder="Git Repository"></input>
-  <input type="text" name="proj_tenk" placeholder="10Kft Client"></input>
-  <input type="submit" href="/projects"></input>
-</form>
+  <ul>
+    <% projectPage[:data].length.times do |ea| %>
+    <%= projectPage[:data][ea][:client]%>
+      <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+        <div id="proj_card" data-id="welcome" data-view="Text" data-title="<%= projectPage[:data][ea][:client]%>" data-text="Click this widget to view the primex dashboard" data-url=""></div>
+      </li>
 
-<% database = "./data/project_setup.rb" %>
-<% opendb = open(database, "r") %>
-<% readdb = opendb.read %>
-<%readdb = readdb.chomp(',') %>
-<% datahash = readdb %>
-<%= datahash %>
+      <script type='text/javascript'>
+        var projCard = document.getElementById('proj_card');
+        var dataUrl = "/sampletv";
+        projCard.setAttribute('data-url',dataUrl);
+      </script>
+
+    <%end%>
 
 
-<div class="proj_card">
-  <a href="/sampletv" class="proj_link">Primex</a>
-  <div class="progress_bar"></div>
+
+  </ul>
+
+  <center><div style="font-size: 12px">wuddup</div></center>
+
+
 </div>
 
 <script type='text/javascript'>
