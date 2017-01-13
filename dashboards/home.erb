@@ -1,49 +1,17 @@
-<% content_for :title do %>MF Projects<% end %>
-<link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
-
-<script type='text/javascript'>
-
-
-  $(function() {
-    $('li').live('click', function(e){
-      var widget = $(this).find('.widget');
-      var url = widget.data('url');
-      window.location = url;
-    });
-  });
-
-
-</script>
-
-
-<form id="add_card" action="/projects" method="POST" >
-  <input type="text" name="proj_name" placeholder="Project Name"></input>
-  <input type="text" name="proj_git" placeholder="Git Repository"></input>
-  <input type="text" name="proj_tenk" placeholder="10Kft Client"></input>
-  <input type="submit" href="/projects"></input>
-</form>
-
-
-<%= @data %>
-
-
-
-<div class="proj_card">
-  <a href="/sampletv" class="proj_link">Primex</a>
-  <div class="progress_bar"></div>
-</div>
-
+<% content_for :title do %>My super sweet dashboard<% end %>
 <div class="gridster">
   <ul>
+
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-      <div data-id="git-issues" data-view="text" data-title="Open" data-text="114" data-moreinfo="more info" data-url="/sampletv"></div>
+      <div data-id="home_data" data-view="Text" data-title="Hello" data-text="This is your shiny new dashboard." data-moreinfo="Protip: You can drag the widgets around!"></div>
     </li>
+
   </ul>
+  <center><div style="font-size: 12px">Try this: curl -d '{ "auth_token": "YOUR_AUTH_TOKEN", "text": "Hey, Look what I can do!" }' \http://<%=request.host%>:<%=request.port%>/widgets/welcome</div></center>
 </div>
 
+
 <script type='text/javascript'>
-
-
 $(function() {
     Dashing.gridsterLayout('[{"col":2,"row":1,"size_x":1,"size_y":1},{"col":1,"row":1,"size_x":1,"size_y":1},' +
         '{"col":4,"row":1,"size_x":2,"size_y":1},{"col":2,"row":3,"size_x":1,"size_y":1},{"col":1,"row":2,' +

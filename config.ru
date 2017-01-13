@@ -1,4 +1,5 @@
 require 'dashing'
+require 'pg'
 
 configure do
   set :auth_token, 'NEW_TOKEN'
@@ -33,23 +34,42 @@ post '/sample' do
 erb :sample, :locals => {'goal1' => goal1, 'goal2' => goal2, 'goal3' => goal3, 'goal4' => goal4, 'goal5' => goal5}
 end
 
+get '/projects' do
+  @data = db.exec("SELECT * FROM card_data")
+  erb :projects
+end
+
 post '/projects' do
   #params come through for each form
   #format them into hash array thing
   #write it to file
 
   #recieve params
-  card_id = ":id => #{params[:proj_name].upcase}_ID"
-  proj_name = params[:proj_name]
-  proj_git = params[:proj_git]
-  proj_tenk = params[:proj_tenk]
+  # card_id = ":id => #{params[:proj_name].upcase}_ID"
+  @proj_name = params[:proj_name]
+  @proj_git = params[:proj_git]
+  @proj_tenk = params[:proj_tenk]
+
+  module ProjectParams
+    PN = params[:proj_name]
+    PG = params[:proj_git]
+    PTK = params[:proj_tenk]
+  end
 
 
-  database = "./data/project_setup.rb"
-  opendb = open(database, "a")
-  opendb.write("{#{card_id}, :card => {name: #{proj_name}, git: #{proj_git}, tenk: #{proj_tenk}}},")
 
-  opendb.close
+
+  db = PG.connect(dbname: 'dash') # Connect to DB
+  db.prepare('add_card', 'insert into card_data (ProjectName, GitRepo, TenkProj) values ($1, $2, $3)') #prepare db for data exec
+  db.exec_prepared('add_card', [ proj_name, proj_git, proj_tenk ]) #send prepared data to the db
+
+
+
+  # database = "./data/project_setup.rb"
+  # opendb = open(database, "a")
+  # opendb.write("{#{card_id}, :card => {name: #{proj_name}, git: #{proj_git}, tenk: #{proj_tenk}}},")
+  #
+  # opendb.close
 
 end
 
