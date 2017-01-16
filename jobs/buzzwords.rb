@@ -18,19 +18,29 @@ send_event('sprintgoals', { items: sprintgoals })
 end
 
 
-
-
-
-
-
-
-#   buzzwords = buzzstring.split(",")
-#   # buzzwords1 = list.split(",")
-#   # buzzwords2 = ['Paradigm shift', 'Leverage', 'Pivoting', 'Turn-key', 'Streamlininess', 'Exit strategy', 'Synergy', 'Enterprise', 'Web 2.0']
-#   puts buzzwords
-#   buzzword_counts = Hash.new({ value: 0 })
-#   random_buzzword = buzzwords.sample
-#   buzzword_counts[random_buzzword] = { label: random_buzzword, value: (buzzword_counts[random_buzzword][:value] + 1) % 30 }
-#   # puts buzzword_counts.values
-#   send_event('buzzwords', { items: buzzword_counts.values })
+# require 'pg'
+#
+# SCHEDULER.every '15m', :first_in => 0 do |job|
+#
+#   # Postgres connection
+#   db = PG.connect(:hostaddr => "192.168.1.1", :user => "dashing", :password => "SECRET", :port => 3306, :dbname => "users" )
+#
+#   # SQL query - simplified because lazy
+#   sql = "SELECT * FROM users"
+#
+#   # Execute the query
+#   db.exec(sql) do |results|
+#
+#     # Sending to List widget, so map to :label and :value
+#     acctitems = results.map do |row|
+#       row = {
+#         :label => row['account'],
+#         :value => row['count']
+#       }
+#     end
+#
+#     # Update the List widget
+#     send_event('account_count', { items: acctitems } )
+#   end
+#
 # end
