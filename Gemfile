@@ -11,6 +11,7 @@ gem 'sqlite3'
 
 gem 'wombat'
 gem 'mechanize'
+gem 'pry'
 
 gem 'pg'
 

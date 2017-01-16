@@ -24,14 +24,12 @@
 </form>
 
 
-<%= @data %>
-
-
-
-<div class="proj_card">
-  <a href="/sampletv" class="proj_link">Primex</a>
-  <div class="progress_bar"></div>
-</div>
+<% DATA.each do |ea_p| %>
+  <div class="proj_card">
+    <a href="/sampletv/<%=ea_p%>" class="proj_link"><%= ea_p %></a>
+    <div class="progress_bar"></div>
+  </div>
+<%end%>
 
 <div class="gridster">
   <ul>

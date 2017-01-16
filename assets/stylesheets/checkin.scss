@@ -1,0 +1,66 @@
+$background-color: #222;
+$text-color: #fff;
+
+$background-warning-color-1: #e82711;
+$background-warning-color-2: #9b2d23;
+$text-warning-color: #fff;
+
+$background-danger-color-1: #eeae32;
+$background-danger-color-2: #ff9618;
+$text-danger-color: #fff;
+
+$background-good-color-1: #47d147;
+$background-good-color-2: #31bf31
+;
+
+@-webkit-keyframes status-warning-background {
+  0%   { background-color: $background-warning-color-1; }
+  50%  { background-color: $background-warning-color-2; }
+  100% { background-color: $background-warning-color-1; }
+}
+@-webkit-keyframes status-danger-background {
+  0%   { background-color: $background-danger-color-1; }
+  50%  { background-color: $background-danger-color-2; }
+  100% { background-color: $background-danger-color-1; }
+}
+
+@-webkit-keyframes status-good-background {
+  0%   { background-color: $background-good-color-1; }
+  50%  { background-color: $background-good-color-2; }
+  100% { background-color: $background-good-color-1; }
+}
+
+@mixin animation($animation-name, $duration, $function, $animation-iteration-count:""){
+  -webkit-animation:  $animation-name $duration $function #{$animation-iteration-count};
+  -moz-animation:     $animation-name $duration $function #{$animation-iteration-count};
+  -ms-animation:      $animation-name $duration $function #{$animation-iteration-count};
+}
+
+
+
+
+.orange {
+  background-color: $background-danger-color-1;
+  @include animation(status-danger-background, 2s, ease, infinite);
+}
+
+.red {
+  background-color: $background-warning-color-1;
+  @include animation(status-warning-background, 2s, ease, infinite);
+}
+
+.green {
+  background-color: $background-good-color-1;
+  @include animation(status-good-background, 2s, ease, infinite);
+
+}
+
+.grey {
+  background: repeating-linear-gradient(
+  45deg,
+  #bfbfbf,
+  #bfbfbf 10px,
+  #e6e6e6	10px,
+  #e6e6e6	20px
+);
+}

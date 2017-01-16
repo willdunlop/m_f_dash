@@ -11,7 +11,7 @@ proj_gitArr = []
 proj_tenkArr = []
 
 db.exec("SELECT * FROM card_data") do |res|
-  puts "results for db query: #{res.inspect}"
+  # puts "results for db query: #{res.inspect}"
   @theData = res.map do |row|
     proj_nameArr << row['projectname']
     proj_gitArr << row['gitrepo']
@@ -19,9 +19,9 @@ db.exec("SELECT * FROM card_data") do |res|
   end
 end
 
-puts "projArr: #{proj_nameArr}"
-puts "projGit: #{proj_gitArr}"
-puts "projTenk: #{proj_tenkArr}"
+# puts "projArr: #{proj_nameArr}"
+# puts "projGit: #{proj_gitArr}"
+# puts "projTenk: #{proj_tenkArr}"
 
 name = proj_nameArr[0]
 

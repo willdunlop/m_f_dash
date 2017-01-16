@@ -1,5 +1,6 @@
 
 #!/usr/bin/env ruby
+
 #
 #        Final Version
 ######################
@@ -9,8 +10,7 @@
 require 'rest-client'
 require 'json'
 require 'date'
-
-
+require 'dashing'
 
 
 #Environment variables for access the repo through API
