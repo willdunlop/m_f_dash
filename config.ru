@@ -3,6 +3,7 @@ require 'dashing'
 require 'pg'
 
 require 'json'
+require 'rest-client'
 
 configure do
   set :auth_token, 'NEW_TOKEN'
@@ -56,12 +57,15 @@ post '/sample' do
   ch3 = params[:ch3]
   ch4 = params[:ch4]
   ch5 = params[:ch5]
+<<<<<<< HEAD
 # puts ">>>>>>>>>>>>>>>>"
 # puts ch5
 # # puts params[:ch]
 # puts ">>>>>>>>>>>>>>>>"
 # checked = "#{params[:ch]}"
 
+=======
+>>>>>>> dcd45744c0d16e69b6d894239f2d0563206109f9
 
   outcomes = "#{tuesday}, #{thursday}, #{tuesday2}, #{friday}"
   sprints = "#{goal1}, #{goal2}, #{goal3}, #{goal4}, #{goal5}"
@@ -71,7 +75,7 @@ post '/sample' do
   File.open('./assets/outcomes.rb', 'w') { |file| file.write(outcomes) }
   File.open('./assets/tickboxes.rb', 'w') { |file| file.write(values) }
 
-erb :sample, :locals => {'goal1' => goal1, 'goal2' => goal2, 'goal3' => goal3, 'goal4' => goal4, 'goal5' => goal5}
+erb :sample
 end
 
 get '/projects' do

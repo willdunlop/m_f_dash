@@ -39,6 +39,7 @@ puts "\e[94mCurrent Milstone: \e[32m#{currentMilestone}\e[0m"
 puts "\e[34mCalculating sprint date range\e[0m"
 puts "\e[94mToday: #{Date.today.to_s}\e[0m
 "
+puts git_token
 SCHEDULER.every '10s', :first_in => 0 do |job|
 
     refCount = refCount + 1
@@ -132,7 +133,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
         all = all - optimal
         @expect << all
       end
-    end
+  end
   points_array(all_issues , optimal_issues)
 
   #Generates an array containing each day of the sprint

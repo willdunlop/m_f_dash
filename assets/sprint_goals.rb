@@ -1,1 +1,1 @@
-goal 1, 2, 3, , 
+vrt, vr, rt, v, vr

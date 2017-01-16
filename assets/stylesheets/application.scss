@@ -56,9 +56,30 @@ html {
 
 .submit {
   align: center;
-  
+
+}
+.collaborators{
+  position: absolute;
+  z-index: 1;
+  float: left;
+  // width: 70px;
 }
 
+.collab_img {
+  border-radius: 50%;
+  height: 4vw;
+  width: 4vw;
+}
+.collab_name {
+  font-size: 12px;
+}
+
+.collaborators2{
+  position: absolute;
+  // z-index:1;
+  float: right;
+  margin-left: 4.5vw;
+}
 body {
   margin: 0;
   background-color: $background-color;

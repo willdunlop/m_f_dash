@@ -28,25 +28,3 @@ statuses = days.zip(colours).map{|k, v| {day: k, colour: v}}
 
   send_event('outcomes', { items: statuses})
 end
-
-
-#   outcomeArray.each do |current_outcome|
-#     if current_outcome == "G"
-#       statuses[current_outcome] = 'green'
-#     elsif current_outcome =="B"
-#       statuses[current_outcome] = 'red'
-#     else
-#       statuses[current_outcome] = 'grey'
-#   end
-# end
-
-# outcomeArray.length.times do |each|
-#   if outcomeArray[each] == "G"
-#     @color = 'red'
-#   end
-#   colors.push(:color => @color)
-# end
-# end
-#   # puts statuses
-#   # puts statuses.values
-#   send_event('outcomes', { items: colors})
