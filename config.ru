@@ -100,7 +100,7 @@ post '/projects' do
   @value = "A Value"
 
   db = PG.connect(dbname: 'dash') # Connect to DB
-  #db.exec("CREATE TABLE #{proj_git}(ProjectName varchar (50), GitRepo varchar (50), TenkProj varchar (50));")
+  db.exec("CREATE TABLE #{proj_name}(P_ID int NOT NULL UNIQUE, ProjectName varchar (50), GitRepo varchar (50), TenkProj varchar (50));")
   db.prepare('add_card', 'insert into card_data (ProjectName, GitRepo, TenkProj) values ($1, $2, $3)') #prepare db for data exec
   db.exec_prepared('add_card', [ proj_name, proj_git, proj_tenk ]) #send prepared data to the db
 

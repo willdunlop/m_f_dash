@@ -9,7 +9,7 @@ db = PG.connect(dbname: 'dash')
 proj_nameArr = []
 proj_gitArr = []
 proj_tenkArr = []
-
+puts "db.cd = #{dash.card_data}"
 db.exec("SELECT * FROM card_data") do |res|
   # puts "results for db query: #{res.inspect}"
   @theData = res.map do |row|
