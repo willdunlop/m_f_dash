@@ -221,7 +221,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
 
         }
       ]
-
+      
     ## Push the most recent point value
     send_event('burn', { labels: dateRange, datasets: data })
     send_event('open_iss', {text: currentOpenIssues })

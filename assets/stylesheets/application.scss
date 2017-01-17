@@ -58,20 +58,25 @@ html {
   align: center;
 
 }
-.collaborators{
+.contributors{
   position: absolute;
   z-index: 1;
   float: left;
   // width: 70px;
 }
 
-.collab_img {
+.contrib_img {
   border-radius: 50%;
-  height: 4vw;
-  width: 4vw;
+  height: 7vw;
+  width: 7vw;
 }
-.collab_name {
-  font-size: 12px;
+.contrib_name {
+  font-size: 18px;
+  text-align: center;
+}
+.contrib_commit {
+  font-size: 11px;
+  text-align: center;
 }
 
 .collaborators2{
