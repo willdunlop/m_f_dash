@@ -13,7 +13,7 @@ SCHEDULER.every '20s' do
     end
 end
 sprintgoals = sprintarray.zip(checksarray).map{|s, c| {label: s, value: c}}
-puts sprintgoals
+# puts sprintgoals
 send_event('sprintgoals', { items: sprintgoals })
 end
 

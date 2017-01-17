@@ -13,24 +13,24 @@
   });
 
 
+
 </script>
 
 
-<form id="add_card" action="/projects" method="POST" >
+<form id="add_card" action="/projects" method="POST">
   <input type="text" name="proj_name" placeholder="Project Name"></input>
   <input type="text" name="proj_git" placeholder="Git Repository"></input>
   <input type="text" name="proj_tenk" placeholder="10Kft Client"></input>
   <input type="submit" href="/projects"></input>
 </form>
-
-
-<% DATA.each do |ea_p| %>
-  <div class="proj_card">
-    <a href="/sampletv/<%=ea_p%>" class="proj_link"><%= ea_p %></a>
-    <div class="progress_bar"></div>
-  </div>
-<%end%>
-
+<button id="formReveal">Add Card</button>
+<div class="pcard_container">
+  <% DATA.each do |ea_p| %>
+    <div class="proj_card">
+      <a href="/sampletv" class="proj_link"><%= ea_p %></a>
+    </div>
+  <%end%>
+</div>
 <div class="gridster">
   <ul>
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
@@ -39,35 +39,17 @@
   </ul>
 </div>
 
-<!-- <script type='text/javascript'>
-
-
-$(function() {
-    Dashing.gridsterLayout('[{"col":2,"row":1,"size_x":1,"size_y":1},{"col":1,"row":1,"size_x":1,"size_y":1},' +
-        '{"col":4,"row":1,"size_x":2,"size_y":1},{"col":2,"row":3,"size_x":1,"size_y":1},{"col":1,"row":2,' +
-        '"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":1,"size_y":1},{"col":3,"row":3,"size_x":1,"size_y":1}' +
-        ',{"col":3,"row":2,"size_x":2,"size_y":1},{"col":1,"row":3,"size_x":1,"size_y":1},{"col":2,' +
-        '"row":2,"size_x":1,"size_y":1},{"col":5,"row":2,"size_x":1,"size_y":1},{"col":4,"row":3,' +
-        '"size_x":2,"size_y":1}]');
-    Dashing.widget_base_dimensions = [370, 340];
-    Dashing.numColumns = 5;
+<script>
+document.getElementsById('formReveal').addEventListener("click", function(){
+ var i = document.getElementById("add_card");
+ if(i.style.display == 'block' ) {
+   i.style.display = 'none';
+ } else if (i.style.display == 'none') {
+   i.style.display = 'block'
+  //-  i.childNodes[0]
+ }  else {
+   i.style.display = 'none';
+ };
 });
 
-
-function editTheWidgets() {
-    var myHash = parseURL(location.href).hash;
-    if (myHash === 'edit') {
-        Dashing.widget_base_dimensions = [370, 340];
-        Dashing.numColumns = 5;
-        editWidgets.onReady();
-        Dashing.gridsterLayout('[{"col":1,"row":7,"size_x":1,"size_y":1},{"col":1,"row":8,"size_x":1,"size_y":1},' +
-            '{"col":1,"row":1,"size_x":2,"size_y":1},{"col":1,"row":4,"size_x":1,"size_y":1},' +
-            '{"col":1,"row":9,"size_x":1,"size_y":1},{"col":1,"row":6,"size_x":1,"size_y":1},' +
-            '{"col":1,"row":7,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":2,"size_y":1},' +
-            '{"col":1,"row":10,"size_x":1,"size_y":1},{"col":1,"row":5,"size_x":1,"size_y":1},' +
-            '{"col":1,"row":6,"size_x":1,"size_y":1},{"col":1,"row":2,"size_x":2,"size_y":1}]');
-        }
-}
-
-setTimeout(editTheWidgets, 3000);
-</script> -->
+</script>

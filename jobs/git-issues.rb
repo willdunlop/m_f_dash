@@ -17,8 +17,9 @@ require 'dashing'
 git_token = ENV["GIT_TOKEN"]
 git_owner = ENV["GIT_OWNER"]
 git_project = ENV["GIT_PROJECT"]
+@git_project = git_project
 
-
+projectName = git_project.capitalize
 
 ## the endpoints for github open issues
 uri = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=open&page=1&per_page=100&access_token=#{git_token}"
@@ -31,15 +32,13 @@ uriMilestone = "https://api.github.com/repos/#{git_owner}/#{git_project}/milesto
 #counter used for debugging
 refCount = 0
 ###Variable for defining what sprint is shown##
-currentMilestone = 7
+
 
 puts "\e[38;5;182mMENTALLY FRIENDLY PROJECT DASHBOARD\e[0m"
-puts "\e[94mRefresh for #{git_project} count: \e[32m#{refCount}\e[0m"
-puts "\e[94mCurrent Milstone: \e[32m#{currentMilestone}\e[0m"
+puts "\e[94mCurrent Milstone: \e[32m#{@currentMilestone}\e[0m"
 puts "\e[34mCalculating sprint date range\e[0m"
-puts "\e[94mToday: #{Date.today.to_s}\e[0m
-"
-puts git_token
+puts "\e[94mToday: #{Date.today.to_s}\e[0m"
+
 SCHEDULER.every '10s', :first_in => 0 do |job|
 
     refCount = refCount + 1
@@ -63,16 +62,36 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
     currentOpenIssues = 0
     currentClosedIssues = 0
 
+    futureMiles = []
+    mileData.each do |cm|
+      dat = Date.parse cm[:due_on]
+      if dat > Date.today
+        futureMiles << dat
+      end
+    end
+
+    mileData.each do |vm|
+      dte = Date.parse vm[:due_on]
+      if dte == futureMiles.min
+        @currentMilestone = vm[:number]
+        @currMSTitle = vm[:title]
+      end
+    end
+
+    puts "\e[94mCurrent Milestone: #{@currentMilestone}\e[0m"
+
+
+
+
     mileData.length.times do |num|
-      if mileData[num][:number] == currentMilestone
-        puts "\e[94mMilestone Due: #{mileData[num][:due_on]}\e[0m"
+      if mileData[num][:number] == @currentMilestone
         @mileDueStr = mileData[num][:due_on]
       end
     end
 
     issuesPage1.length.times do |i|
       if issuesPage1[i][:milestone] != nil
-        if issuesPage1[i][:milestone][:number] == currentMilestone
+        if issuesPage1[i][:milestone][:number] == @currentMilestone
           currentOpenIssues = currentOpenIssues + 1
         end
       end
@@ -82,7 +101,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
 
     issuesPage2.length.times do |x|
       if issuesPage2[x][:milestone] != nil
-        if issuesPage2[x][:milestone][:number] == currentMilestone
+        if issuesPage2[x][:milestone][:number] == @currentMilestone
           currentOpenIssues = currentOpenIssues + 1
         end
       end
@@ -93,9 +112,8 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
 
     cIssuesPage1.length.times do |a|
       if cIssuesPage1[a][:milestone] != nil
-        if cIssuesPage1[a][:milestone][:number] == currentMilestone
+        if cIssuesPage1[a][:milestone][:number] == @currentMilestone
             currentClosedIssues = currentClosedIssues + 1
-            #puts "Issue: #{cIssuesPage1[a][:number]} Closed at: #{cIssuesPage1[a][:closed_at]}"
             closedDateStr = cIssuesPage1[a][:closed_at]
             closedDate = Date.parse closedDateStr
             issClosedDate << closedDate.to_s
@@ -106,7 +124,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
 
     cIssuesPage2.length.times do |b|
       if cIssuesPage2[b][:milestone] != nil
-        if cIssuesPage2[b][:milestone][:number] == currentMilestone
+        if cIssuesPage2[b][:milestone][:number] == @currentMilestone
             currentClosedIssues = currentClosedIssues + 1
         end
       end
@@ -122,8 +140,8 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
 
   mileDue = Date.parse @mileDueStr
 
-  puts "\e[94mStart of sprint #{currentMilestone}: #{mileDue - 11}\e[0m"
-  puts "\e[94mEnd of Sprint #{currentMilestone}: #{mileDue}\e[0m"
+  puts "\e[94mStart of Sprint #{@currentMilestone}: #{mileDue - 11}\e[0m"
+  puts "\e[94mEnd of Sprint #{@currentMilestone}: #{mileDue}\e[0m"
 
   # Used for calculating the expected amount (Diagonal straight line)
   optimal_issues = all_issues.to_f / 11
@@ -145,13 +163,6 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
      eaDay = eaDay + 1
    end
    dateRange = dateRangeRev.reverse
-
-  #  dataPos = []
-   #creates template burndown data array
-  #     = [all_issues]
-
-   #puts "DATES ARE: #{dateRange}"
-  # puts "Today: #{Date.today.to_s}"
 
 # Check Date of today and match it to array position in dateRange
 
@@ -185,15 +196,12 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
       newArr << correction - 1
     end
 
-  #   #removes each outdated element in array
+    #removes each outdated element in array
     (eaPos+1..@actual.length).reverse_each do |rem|
       @actual.delete_at(rem)
-      #puts rem
-      #puts "Mini Actual: #{@actual}"
     end
-  #   #adds the updated amounts
+    #adds the updated amounts
     @actual.insert(eaPos+1, newArr)
-    #puts "NEW ACTUAL: #{@actual.flatten}"
     @actual = @actual.flatten
   end
   #
@@ -201,13 +209,12 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
   #Debugging
 
 
-   puts "\e[94mBurndown Data: #{@actual}\e[0m"
+   puts "\e[94mBurndown Point Data: #{@actual}\e[0m"
 
-   # Sets the data variable
+   # Formats data for sending
     data = [
         {
           label: 'Actual',
-          #data: needs to be an array that removes amount from all issues at the correct position
           data: @actual,
           backgroundColor: [ 'rgba(255, 206, 86, 0.2)' ] * dateRange.length,
           borderColor: [ 'rgba(255, 206, 86, 1)' ] * dateRange.length,
@@ -230,6 +237,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
     send_event('burn', { labels: dateRange, datasets: data })
     send_event('open_iss', {text: currentOpenIssues })
     send_event('closed_iss', {text: currentClosedIssues })
+    send_event('title', {text:  @currMSTitle, title: projectName})
 
 
 end # SCHEDULER

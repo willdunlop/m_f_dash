@@ -26,7 +26,6 @@ end
 
 get '/sampletv' do
     request.path_info
-    Sinatra::Application::THIS = "something"
 end
 
 get '/sampletv/:ea_p' do
@@ -57,15 +56,8 @@ post '/sample' do
   ch3 = params[:ch3]
   ch4 = params[:ch4]
   ch5 = params[:ch5]
-<<<<<<< HEAD
-# puts ">>>>>>>>>>>>>>>>"
-# puts ch5
-# # puts params[:ch]
-# puts ">>>>>>>>>>>>>>>>"
-# checked = "#{params[:ch]}"
 
-=======
->>>>>>> dcd45744c0d16e69b6d894239f2d0563206109f9
+
 
   outcomes = "#{tuesday}, #{thursday}, #{tuesday2}, #{friday}"
   sprints = "#{goal1}, #{goal2}, #{goal3}, #{goal4}, #{goal5}"
@@ -82,10 +74,8 @@ get '/projects' do
   proj_nameArr = []
   proj_gitArr = []
   proj_tenkArr = []
-  puts "Anything please"
   db = PG.connect(dbname: 'dash')
   db.exec("SELECT * FROM card_data") do |res|
-    puts "results for db query: #{res.inspect}"
     res.map do |row|
       proj_nameArr << row['projectname']
       proj_gitArr << row['gitrepo']
@@ -110,10 +100,9 @@ post '/projects' do
   @value = "A Value"
 
   db = PG.connect(dbname: 'dash') # Connect to DB
+  #db.exec("CREATE TABLE #{proj_git}(ProjectName varchar (50), GitRepo varchar (50), TenkProj varchar (50));")
   db.prepare('add_card', 'insert into card_data (ProjectName, GitRepo, TenkProj) values ($1, $2, $3)') #prepare db for data exec
   db.exec_prepared('add_card', [ proj_name, proj_git, proj_tenk ]) #send prepared data to the db
-
-
 
   # database = "./data/project_setup.rb"
   # opendb = open(database, "a")
@@ -124,15 +113,14 @@ post '/projects' do
   erb :projects
 
 end
+
 #Database preperation
+db = PG.connect(dbname: 'dash') # Connect to DB
 
 proj_nameArr = []
 proj_gitArr = []
 proj_tenkArr = []
-puts "Anything please"
-db = PG.connect(dbname: 'dash')
 db.exec("SELECT * FROM card_data") do |res|
-  puts "results for db query: #{res.inspect}"
   res.map do |row|
     proj_nameArr << row['projectname']
     proj_gitArr << row['gitrepo']

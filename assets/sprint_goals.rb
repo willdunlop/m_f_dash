@@ -1,1 +1,1 @@
-vrt, vr, rt, v, vr
+Issue Tracker, Sprint Goals, Collaborators, Burndown, Database
