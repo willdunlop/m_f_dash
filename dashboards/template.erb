@@ -1,0 +1,79 @@
+<script type='text/javascript'>
+    $(function() {
+      Dashing.gridsterLayout('[{"col":1,"row":1,"size_x":2,"size_y":1},{"col":1,"row":2,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":1,"size_y":1},{"col":1,"row":4,"size_x":1,"size_y":1},{"col":2,"row":2,"size_x":1,"size_y":2},{"col":3,"row":3,"size_x":1,"size_y":1},{"col":4,"row":3,"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":2,"size_y":2}]')
+    });
+</script>
+    <% git_token = ENV["GIT_TOKEN"] %>
+
+    <!-- #ENTER GIT REPO NAME --> -->
+    <% git_project = "repo_name" %>
+
+    <% gitproject = "https://api.github.com/repos/mentallyfriendly/#{git_project}/collaborators?&access_token=#{git_token}"%>
+
+    <!-- #fetches the data from the api -->
+    <% gitResponse = RestClient.get gitproject%>
+
+    <!-- #formats it as a json -->
+    <% gituserJson = JSON.parse(gitResponse.body, symbolize_names: true) %>
+
+<div class="collaborators">
+    <% n = 0 %>
+    <% until n == 10 %>
+      <img class="collab_img" src="<%= gituserJson[n][:avatar_url] %>"/>
+      <h3 class="collab_name"><%= gituserJson[n][:login] %></h3>
+    <% n = n + 1 %>
+    <%end%>
+</div>
+
+<div class="collaborators2">
+    <% until n == 20 %>
+      <img class="collab_img" src="<%= gituserJson[n][:avatar_url] %>"/>
+      <h3 class="collab_name"><%= gituserJson[n][:login] %></h3>
+    <% n = n + 1 %>
+    <%end%>
+</div>
+
+<% content_for :title do %>1080p dashboard<% end %>
+
+<div class="gridster">
+  <ul>
+    <% project_name = "ENTER_PROJECT_NAME" %>
+
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="<%=project_name%>_title" data-view="Text" data-title="" data-text="" data-moreinfo=""></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-view="Clock"></div>
+      <i class="fa fa-clock-o icon-background"></i>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="<%=project_name%>_outcomes" data-view="CheckIn" data-title="Hello" style="text-align: center; font-size: 63px;" data-text="This is your shiny new dashboard." data-moreinfo="Protip: You can drag the widgets around!"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="<%=project_name%>_git-issues" data-view="text" data-title="Open" data-text="114" data-moreinfo="more info"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
+      <div data-id="<%=project_name%>_sprintgoals" data-view="List" data-unordered="true" data-title="Sprint Goals" data-moreinfo="# of times said around the office"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="<%=project_name%>_open_iss" data-view="Text" data-title="Open" style="background-color:#000;"></div>
+      <i class="fa fa-circle icon-background"></i>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="<%=project_name%>_closed_iss" data-view="Text" data-title="Closed" style="background-color:#000;"></div>
+      <i class="fa fa-ban icon-background"></i>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="2">
+      <div data-id="<%=project_name%>_burn" data-view ="LineChart" data-right-margin="10" data-bottom-margin="5"></div>
+    </li>
+
+  </ul>
+
+</div>

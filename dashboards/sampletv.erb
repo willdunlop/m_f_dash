@@ -1,35 +1,34 @@
 <script type='text/javascript'>
- $(function() {
-   Dashing.gridsterLayout('[{"col":1,"row":1,"size_x":2,"size_y":1},{"col":1,"row":2,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":1,"size_y":1},{"col":1,"row":4,"size_x":1,"size_y":1},{"col":2,"row":2,"size_x":1,"size_y":2},{"col":3,"row":3,"size_x":1,"size_y":1},{"col":4,"row":3,"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":2,"size_y":2}]')
- });
- </script>
-<% git_token = ENV["GIT_TOKEN"] %>
+    $(function() {
+      Dashing.gridsterLayout('[{"col":1,"row":1,"size_x":2,"size_y":1},{"col":1,"row":2,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":1,"size_y":1},{"col":1,"row":4,"size_x":1,"size_y":1},{"col":2,"row":2,"size_x":1,"size_y":2},{"col":3,"row":3,"size_x":1,"size_y":1},{"col":4,"row":3,"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":2,"size_y":2}]')
+    });
+</script>
+    <% git_token = ENV["GIT_TOKEN"] %>
+    <% git_project = "primex" %>
 
-  <% gitproject = "https://api.github.com/repos/mentallyfriendly/primex/collaborators?&access_token=#{git_token}"%>
+    <% gitproject = "https://api.github.com/repos/mentallyfriendly/#{git_project}/contributors?&access_token=#{git_token}"%>
 
   <!-- #fetches the data from the api -->
-  <% gitResponse = RestClient.get gitproject%>
+    <% gitResponse = RestClient.get gitproject%>
 
   <!-- #formats it as a json -->
-  <% gituserJson = JSON.parse(gitResponse.body, symbolize_names: true) %>
+    <% gituserJson = JSON.parse(gitResponse.body, symbolize_names: true) %>
 
   <!-- #an example of extracting data from the json -->
-  <div class="collaborators">
+<div class="contributors">
+    <% gituserJson.each do |contributor| %>
 
-<% n = 0 %>
-<% until n == 10 %>
-<img class="collab_img" src="<%= gituserJson[n][:avatar_url] %>"/>
-<h3 class="collab_name"><%= gituserJson[n][:login] %></h3>
-<% n = n + 1 %>
-<%end%>
+      <img class="contrib_img" src="<%= contributor[:avatar_url] %>"/>
+      <h3 class="contrib_name"><%= contributor[:login] %></h3>
+      <% if contributor[:contributions] > 1 || contributor[:contributions] == 0 %>
+      <% word = "commits" %>
+      <% else %>
+      <% word = "commit" %>
+      <% end %>
+      <h4 class="contrib_commit"><%= contributor[:contributions] %> <%= word %></h4>
+<% end %>
 </div>
-<div class="collaborators2">
-<% until n == 20 %>
-<img class="collab_img" src="<%= gituserJson[n][:avatar_url] %>"/>
-<h3 class="collab_name"><%= gituserJson[n][:login] %></h3>
-<% n = n + 1 %>
-<%end%>
-</div>
+
 
 <% content_for :title do %>1080p dashboard<% end %>
 
@@ -69,7 +68,7 @@
     </li>
 
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="2">
-      <div data-id="burn" data-view ="LineChart" data-right-margin="10" data-bottom-margin="5"></div>
+      <div data-id="primex_burn" data-view ="LineChart" data-right-margin="10" data-bottom-margin="5"></div>
     </li>
 
   </ul>
