@@ -1,3 +1,4 @@
+
 #!/usr/bin/env ruby
 
 #
@@ -9,11 +10,14 @@
 require 'rest-client'
 require 'json'
 require 'date'
+require 'dashing'
+
 
 #Environment variables for access the repo through API
 git_token = ENV["GIT_TOKEN"]
 git_owner = ENV["GIT_OWNER"]
 git_project = ENV["GIT_PROJECT"]
+
 
 
 ## the endpoints for github open issues

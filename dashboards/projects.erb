@@ -1,7 +1,17 @@
-<% content_for :title do %>My super sweet dashboard<% end %>
+<% content_for :title do %>MF Projects<% end %>
 <link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
 
 <script type='text/javascript'>
+
+
+  $(function() {
+    $('li').live('click', function(e){
+      var widget = $(this).find('.widget');
+      var url = widget.data('url');
+      window.location = url;
+    });
+  });
+
 
 </script>
 
@@ -13,17 +23,20 @@
   <input type="submit" href="/projects"></input>
 </form>
 
-<% database = "./data/project_setup.rb" %>
-<% opendb = open(database, "r") %>
-<% readdb = opendb.read %>
-<%readdb = readdb.chomp(',') %>
-<% datahash = readdb %>
-<%= datahash %>
 
+<% DATA.each do |ea_p| %>
+  <div class="proj_card">
+    <a href="/sampletv/<%=ea_p%>" class="proj_link"><%= ea_p %></a>
+    <div class="progress_bar"></div>
+  </div>
+<%end%>
 
-<div class="proj_card">
-  <a href="/sampletv" class="proj_link">Primex</a>
-  <div class="progress_bar"></div>
+<div class="gridster">
+  <ul>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="git-issues" data-view="text" data-title="Open" data-text="114" data-moreinfo="more info" data-url="/sampletv"></div>
+    </li>
+  </ul>
 </div>
 
 <!-- <script type='text/javascript'>
