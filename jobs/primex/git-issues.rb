@@ -35,11 +35,27 @@ refCount = 0
 
 
 puts "\e[38;5;182mMENTALLY FRIENDLY PROJECT DASHBOARD\e[0m"
-puts "\e[94mCurrent Milstone: \e[32m#{@currentMilestone}\e[0m"
-puts "\e[34mCalculating sprint date range\e[0m"
 puts "\e[94mToday: #{Date.today.to_s}\e[0m"
 
 SCHEDULER.every '10s', :first_in => 0 do |job|
+
+  #Environment variables for access the repo through API
+  git_token = ENV["GIT_TOKEN"]
+  git_owner = ENV["GIT_OWNER"]
+  git_project = ENV["GIT_PROJECT"]
+  @git_project = git_project
+
+  projectName = git_project.capitalize
+
+  ## the endpoints for github open issues
+  uri = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=open&page=1&per_page=100&access_token=#{git_token}"
+  uri2 = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=open&page=2&per_page=100&access_token=#{git_token}"
+  ## the endpoints for github closed issues
+  uriClosed1 = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=closed&page=1&per_page=100&access_token=#{git_token}"
+  uriClosed2 = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=closed&page=2&per_page=100&access_token=#{git_token}"
+  #the endpoint for github milestone data
+  uriMilestone = "https://api.github.com/repos/#{git_owner}/#{git_project}/milestones?page=1&per_page=100&access_token=#{git_token}"
+
 
     refCount = refCount + 1
     puts "\e[90m=\e[0m" * 20
@@ -79,9 +95,6 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
     end
 
     puts "\e[94mCurrent Milestone: #{@currentMilestone}\e[0m"
-
-
-
 
     mileData.length.times do |num|
       if mileData[num][:number] == @currentMilestone

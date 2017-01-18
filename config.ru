@@ -16,6 +16,7 @@ configure do
   end
 end
 
+
 map Sinatra::Application.assets_prefix do
   run Sinatra::Application.sprockets
 end
@@ -24,13 +25,12 @@ get '/sample' do
     erb :sprint_goals_edit
 end
 
-get '/sampletv' do
+get "/sampletv" do
   #works but only on linux
   #system "fuser -k 3030/tcp && dashing start"
 
   #works but also closes the browser
   #system "lsof -P | grep '3030' | awk '{print $2}' | xargs kill"
-  puts "REFRESHMADETHISHAPPEN!!1!"
     request.path_info
 end
 
