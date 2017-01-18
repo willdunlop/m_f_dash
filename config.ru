@@ -25,6 +25,12 @@ get '/sample' do
 end
 
 get '/sampletv' do
+  #works but only on linux
+  #system "fuser -k 3030/tcp && dashing start"
+
+  #works but also closes the browser
+  #system "lsof -P | grep '3030' | awk '{print $2}' | xargs kill"
+  puts "REFRESHMADETHISHAPPEN!!1!"
     request.path_info
 end
 
@@ -71,6 +77,8 @@ erb :sample
 end
 
 get '/projects' do
+  puts "REFRESHMADETHISHAPPEN!!1!"
+
   proj_nameArr = []
   proj_gitArr = []
   proj_tenkArr = []
@@ -88,6 +96,8 @@ get '/projects' do
 end
 
 post '/projects' do
+  puts "REFRESHMADETHISHAPPEN!!1!"
+
   #params come through for each form
   #format them into hash array thing
   #write it to file
@@ -127,6 +137,17 @@ db.exec("SELECT * FROM card_data") do |res|
     proj_tenkArr << row['tenkproj']
   end
 end
+
+# get "/#{change}" do
+#
+#
+# #Changes env to radient or writes it to a seperate file
+# #Run a command that restarts the server
+# #the job wil run and the variable it recieves would be different
+#
+# #system  kill server && dashing start
+#
+# end
 
 Sinatra::Application::DATA = proj_nameArr
 

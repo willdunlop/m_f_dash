@@ -122,10 +122,14 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
     end
     puts "\e[34mRetreiving Closed Issues from page 1\e[0m"
 
+
     cIssuesPage2.length.times do |b|
       if cIssuesPage2[b][:milestone] != nil
         if cIssuesPage2[b][:milestone][:number] == @currentMilestone
             currentClosedIssues = currentClosedIssues + 1
+            closedDateStr2 = cIssuesPage2[b][:closed_at]
+            closedDate2 = Date.parse closedDateStr2
+            issClosedDate << closedDate2.to_str
         end
       end
     end
@@ -174,6 +178,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
 
   dataPos = []
    #array containing closed date data array positions
+   puts "\e[31missClosedDate: #{issClosedDate}\e[0m"
    issClosedDate.length.times do |eaClosed|
      dateRange.length.times do |eaDate|
       if issClosedDate[eaClosed] == dateRange[eaDate]
@@ -182,24 +187,25 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
     end
   end
 
+puts "\e[31mActual before update: #{@actual}\e[0m"
+puts "\e[31mdataPos: #{dataPos.sort}\e[0m"
+dataPos = dataPos.sort.reverse
   #The following loop updates the burndown array data to match closed issues with dates respectively
-  dataPos.length.times do |eaPos|
-    newTotal = @actual[eaPos].to_i - 1
+  nt = @actual[0]
+  dataPos.each do |eaPos|
+    newTotal = nt - 1
 
     #replaces the old value with the new
-    @actual.delete_at(dataPos[eaPos].to_i)
-    @actual.insert(dataPos[eaPos].to_i, newTotal)
+    @actual.delete_at(eaPos.to_i)
+    @actual.insert(eaPos.to_i, newTotal)
+    puts "\e[32mActual after replace: #{@actual}\e[0m"
 
     newArr = []
     #Corrects the open amount and puts into a new array
-    @actual[eaPos+1..@actual.length].each do |correction|
-      newArr << correction - 1
-    end
+    @actual[eaPos+1..@actual.length].each { |correction| newArr << correction - 1 }
 
     #removes each outdated element in array
-    (eaPos+1..@actual.length).reverse_each do |rem|
-      @actual.delete_at(rem)
-    end
+    (eaPos+1..@actual.length).reverse_each { |rem| @actual.delete_at(rem) }
     #adds the updated amounts
     @actual.insert(eaPos+1, newArr)
     @actual = @actual.flatten
@@ -208,7 +214,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
   #   actual.delete_at(11)
   #Debugging
 
-
+  puts "\e[31mActual after: #{@actual}\e[0m"
    puts "\e[94mBurndown Point Data: #{@actual}\e[0m"
 
    # Formats data for sending
@@ -232,7 +238,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
 
         }
       ]
-      
+
     ## Push the most recent point value
     send_event('burn', { labels: dateRange, datasets: data })
     send_event('open_iss', {text: currentOpenIssues })
