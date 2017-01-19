@@ -3,31 +3,51 @@
       Dashing.gridsterLayout('[{"col":1,"row":1,"size_x":2,"size_y":1},{"col":1,"row":2,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":1,"size_y":1},{"col":1,"row":4,"size_x":1,"size_y":1},{"col":2,"row":2,"size_x":1,"size_y":2},{"col":3,"row":3,"size_x":1,"size_y":1},{"col":4,"row":3,"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":2,"size_y":2}]')
     });
 </script>
+
     <% git_token = ENV["GIT_TOKEN"] %>
     <% git_project = File.read('./assets/current_project.txt').gsub("\n",'') %>
+    <% teamarr = []%>
+    <% gitmembersJson = [] %>
 
-    <% gitproject = "https://api.github.com/repos/mentallyfriendly/#{git_project}/contributors?&access_token=#{git_token}"%>
-
-  <!-- #fetches the data from the api -->
-    <% gitResponse = RestClient.get gitproject%>
-
+    <% gitteams = "https://api.github.com/repos/mentallyfriendly/#{git_project}/teams?&access_token=#{git_token}"%>
+    <% gitResponse1 = RestClient.get gitteams%>
   <!-- #formats it as a json -->
-    <% gituserJson = JSON.parse(gitResponse.body, symbolize_names: true) %>
+    <% gitteamsJson = JSON.parse(gitResponse1.body, symbolize_names: true) %>
 
   <!-- #an example of extracting data from the json -->
-<div class="contributors">
-    <% gituserJson.each do |contributor| %>
+<% hashArr = [] %>
+  <% gitteamsJson.each do |team| %>
+<!-- #fetches the data from the api -->
+        <% gitResponse2 = RestClient.get "https://api.github.com/teams/#{team[:id]}/members?&access_token=#{git_token}"%>
+<!-- #formats it as a json -->
+        <% gitmembersJson = JSON.parse(gitResponse2.body, symbolize_names: true) %>
+        <% gitmembers = [] %>
+        <% gitmembers << gitmembersJson %>
 
-      <img class="contrib_img" src="<%= contributor[:avatar_url] %>"/>
-      <h3 class="contrib_name"><%= contributor[:login] %></h3>
-      <% if contributor[:contributions] > 1 || contributor[:contributions] == 0 %>
-      <% word = "commits" %>
-      <% else %>
-      <% word = "commit" %>
+        <% gitmembersJson.each do |member| %>
+        <% hash = {} %>
+        <% hash.merge!(login: member[:login], avatar: member[:avatar_url]) %>
+        <% hashArr << hash %>
+
+        <%end %>
       <% end %>
-      <h4 class="contrib_commit"><%= contributor[:contributions] %> <%= word %></h4>
-<% end %>
-</div>
+
+      <div class="members">
+      <% n = 0 %>
+       <% until n == 10 || n == hashArr.length %>
+       <img class="member_img" src="<%= hashArr[n][:avatar] %>"/>
+       <h3 class="member_name"><%= hashArr[n][:login] %></h3>
+       <% n = n + 1 %>
+       <%end%>
+        </div>
+      <div class="members2">
+      <% until n == 20 || n == hashArr.length %>
+      <img class="member_img" src="<%= hashArr[n][:avatar] %>"/>
+      <h3 class="member_name"><%= hashArr[n][:login] %></h3>
+      <% n = n + 1 %>
+      <%end%>
+      </div>
+
 
 
 <% content_for :title do %>1080p dashboard<% end %>

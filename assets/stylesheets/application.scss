@@ -58,28 +58,28 @@ html {
   align: center;
 
 }
-.contributors{
+.members{
   position: absolute;
   z-index: 1;
   float: left;
   // width: 70px;
 }
 
-.contrib_img {
+.member_img {
   border-radius: 50%;
-  height: 7vw;
-  width: 7vw;
+  height: 8vh;
+  width: 8vh;
 }
-.contrib_name {
-  font-size: 18px;
+.member_name {
+  font-size: 14px;
   text-align: center;
 }
-.contrib_commit {
-  font-size: 11px;
-  text-align: center;
-}
+// .contrib_commit {
+//   font-size: 11px;
+//   text-align: center;
+// }
 
-.collaborators2{
+.members2{
   position: absolute;
   // z-index:1;
   float: right;
