@@ -12,25 +12,28 @@ require 'json'
 require 'date'
 require 'dashing'
 
-
+puts "\e[38;5;182mMENTALLY FRIENDLY PROJECT DASHBOARD\e[0m"
+puts "\e[94mToday: #{Date.today.to_s}\e[0m"
 #Environment variables for access the repo through API
-
+refCount = 0
 
 SCHEDULER.every '10s', :first_in => 0 do |job|
+  refCount = refCount + 1
+  puts "\e[90m=\e[0m" * 20
+  puts "\e[36mSCHEDULAR: #{refCount} refreshes so far...\e[0m"
+
+
 
   git_token = ENV["GIT_TOKEN"]
   git_owner = ENV["GIT_OWNER"]
   git_project = File.read('./assets/current_project.txt').gsub("\n",'')
-  puts "GIT PROJECT #{git_project}"
+  puts "\e[94mCurrent Project: #{git_project}\e[0m"
   @git_project = git_project
 
   projectName = git_project.capitalize
 
   ## the endpoints for github open issues
   uri = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=open&page=1&per_page=100&access_token=#{git_token}"
-
-  puts "URI: #{uri}"
-
 
   uri2 = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=open&page=2&per_page=100&access_token=#{git_token}"
   ## the endpoints for github closed issues
@@ -39,17 +42,10 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
   #the endpoint for github milestone data
   uriMilestone = "https://api.github.com/repos/#{git_owner}/#{git_project}/milestones?page=1&per_page=100&access_token=#{git_token}"
   #counter used for debugging
-  refCount = 0
+
   ###Variable for defining what sprint is shown##
 
 
-  puts "\e[38;5;182mMENTALLY FRIENDLY PROJECT DASHBOARD\e[0m"
-  puts "\e[94mToday: #{Date.today.to_s}\e[0m"
-
-
-  refCount = refCount + 1
-  puts "\e[90m=\e[0m" * 20
-  puts "\e[36mSCHEDULAR: #{refCount} refreshes so far...\e[0m"
   #Retrieves data from API and formats it
   puts "\e[34mGetting page 1 and 2 for open issues\e[0m"
   firstResponse = RestClient.get uri
@@ -181,7 +177,7 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
 
   dataPos = []
    #array containing closed date data array positions
-   puts "\e[31missClosedDate: #{issClosedDate}\e[0m"
+   #puts "\e[31missClosedDate: #{issClosedDate}\e[0m"
    issClosedDate.length.times do |eaClosed|
      dateRange.length.times do |eaDate|
       if issClosedDate[eaClosed] == dateRange[eaDate]
@@ -190,8 +186,8 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
     end
   end
 
-puts "\e[31mActual before update: #{@actual}\e[0m"
-puts "\e[31mdataPos: #{dataPos.sort}\e[0m"
+#puts "\e[31mActual before update: #{@actual}\e[0m"
+#puts "\e[31mdataPos: #{dataPos.sort}\e[0m"
 dataPos = dataPos.sort.reverse
   #The following loop updates the burndown array data to match closed issues with dates respectively
   nt = @actual[0]
@@ -201,7 +197,7 @@ dataPos = dataPos.sort.reverse
     #replaces the old value with the new
     @actual.delete_at(eaPos.to_i)
     @actual.insert(eaPos.to_i, newTotal)
-    puts "\e[32mActual after replace: #{@actual}\e[0m"
+    #puts "\e[32mActual after replace: #{@actual}\e[0m"
 
     newArr = []
     #Corrects the open amount and puts into a new array

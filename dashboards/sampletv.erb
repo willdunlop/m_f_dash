@@ -75,27 +75,49 @@
 
 </div>
 
-<% sprintgoals = File.read('./assets/sprint_goals')
 
-
-
-<form action="/sampletv" method="POST">
-  <h1> Sprint Goals </h1>
-  <input class="txtbox" placeholder="Goal 1" value="An Example" type="text" name="goal1"></input>
-  <input type="checkbox" name="ch1" value="ch1">
-  <input class="txtbox" placeholder="Goal 2" type="text" name="goal2"></input>
-  <input type="checkbox" name="ch2" value="ch2">
-  <input class="txtbox" placeholder="Goal 3" type="text" name="goal3"></input>
-  <input type="checkbox" name="ch3" value="ch3">
-  <input class="txtbox"placeholder="Goal 4" type="text" name="goal4"></input>
-  <input type="checkbox" name="ch4" value="ch4">
-  <input class="txtbox" placeholder="Goal 5" type="text" name="goal5"></input>
-  <input type="checkbox" name="ch5" value="ch5">
-  <h1> Check Ins </h1>
-  <input class="checkinform" placeholder="Tuesday" type="text" name="Tuesday" required maxlength="1"></input>
-  <input class="checkinform" placeholder="Thursday" type="text" name="Thursday" required maxlength="1"></input>
-  <input class="checkinform" placeholder="Tuesday2" type="text" name="Tuesday2" required maxlength="1"></input>
-  <input class="checkinform" placeholder="Friday" type="text" name="Friday" required maxlength="1"></input>
+<!-- <form action="/sampletv" method="POST">
   <input placeholder="Project" type="text" name="current_project"></input>
   <p><input class="submit" type="submit"></p>
+</form> -->
+
+<% current_project = File.read('./assets/current_project.txt').gsub("\n",'') %>
+<% sprintgoalsArr = File.read("./assets/#{current_project}_sprint_goals.rb").split(',') %>
+
+<form action="/sampletv" method="POST">
+  <input id="projectField" placeholder="Project" type="text" name="current_project"></input>
+
+  <p><input class="submit" type="submit"></p>
 </form>
+
+<script>
+
+  var projy = document.getElementById('projectField');
+  projy.addEventListener('change', function(){
+      var val = projy.value;
+      console.log(val);
+    });
+
+//////////
+
+  function readTextFile(file)
+  {
+      var rawFile = new XMLHttpRequest();
+      rawFile.open("GET", file, false);
+      rawFile.onreadystatechange = function ()
+      {
+          if(rawFile.readyState === 4)
+          {
+              if(rawFile.status === 200 || rawFile.status == 0)
+              {
+                  var allText = rawFile.responseText;
+                  alert(allText);
+              }
+          }
+      }
+      rawFile.send(null);
+  };
+  var read = readTextFile("file:///~/m_f_dash/assets/" + projy.value "_sprint_goals.txt");
+
+  console.log(read)
+  </script>
