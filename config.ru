@@ -16,7 +16,6 @@ configure do
   end
 end
 
-
 map Sinatra::Application.assets_prefix do
   run Sinatra::Application.sprockets
 end
@@ -25,13 +24,9 @@ get '/sample' do
     erb :sprint_goals_edit
 end
 
-get "/sampletv" do
-  #works but only on linux
-  #system "fuser -k 3030/tcp && dashing start"
-
-  #works but also closes the browser
-  #system "lsof -P | grep '3030' | awk '{print $2}' | xargs kill"
+get '/sampletv' do
     request.path_info
+    Sinatra::Application::THIS = "something"
 end
 
 get '/sampletv/:ea_p' do
@@ -64,7 +59,6 @@ post '/sample' do
   ch5 = params[:ch5]
 
 
-
   outcomes = "#{tuesday}, #{thursday}, #{tuesday2}, #{friday}"
   sprints = "#{goal1}, #{goal2}, #{goal3}, #{goal4}, #{goal5}"
   values = "#{ch1}, #{ch2}, #{ch3}, #{ch4}, #{ch5}"
@@ -77,13 +71,13 @@ erb :sample
 end
 
 get '/projects' do
-  puts "REFRESHMADETHISHAPPEN!!1!"
-
   proj_nameArr = []
   proj_gitArr = []
   proj_tenkArr = []
+  puts "Anything please"
   db = PG.connect(dbname: 'dash')
   db.exec("SELECT * FROM card_data") do |res|
+    puts "results for db query: #{res.inspect}"
     res.map do |row|
       proj_nameArr << row['projectname']
       proj_gitArr << row['gitrepo']
@@ -96,8 +90,6 @@ get '/projects' do
 end
 
 post '/projects' do
-  puts "REFRESHMADETHISHAPPEN!!1!"
-
   #params come through for each form
   #format them into hash array thing
   #write it to file
@@ -110,9 +102,10 @@ post '/projects' do
   @value = "A Value"
 
   db = PG.connect(dbname: 'dash') # Connect to DB
-  db.exec("CREATE TABLE #{proj_name}(P_ID int NOT NULL UNIQUE, ProjectName varchar (50), GitRepo varchar (50), TenkProj varchar (50));")
   db.prepare('add_card', 'insert into card_data (ProjectName, GitRepo, TenkProj) values ($1, $2, $3)') #prepare db for data exec
   db.exec_prepared('add_card', [ proj_name, proj_git, proj_tenk ]) #send prepared data to the db
+
+
 
   # database = "./data/project_setup.rb"
   # opendb = open(database, "a")
@@ -123,31 +116,21 @@ post '/projects' do
   erb :projects
 
 end
-
 #Database preperation
-db = PG.connect(dbname: 'dash') # Connect to DB
 
 proj_nameArr = []
 proj_gitArr = []
 proj_tenkArr = []
+puts "Anything please"
+db = PG.connect(dbname: 'dash')
 db.exec("SELECT * FROM card_data") do |res|
+  puts "results for db query: #{res.inspect}"
   res.map do |row|
     proj_nameArr << row['projectname']
     proj_gitArr << row['gitrepo']
     proj_tenkArr << row['tenkproj']
   end
 end
-
-# get "/#{change}" do
-#
-#
-# #Changes env to radient or writes it to a seperate file
-# #Run a command that restarts the server
-# #the job wil run and the variable it recieves would be different
-#
-# #system  kill server && dashing start
-#
-# end
 
 Sinatra::Application::DATA = proj_nameArr
 

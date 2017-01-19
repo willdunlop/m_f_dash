@@ -39,117 +39,99 @@ puts "\e[94mToday: #{Date.today.to_s}\e[0m"
 
 SCHEDULER.every '10s', :first_in => 0 do |job|
 
-  #Environment variables for access the repo through API
-  git_token = ENV["GIT_TOKEN"]
-  git_owner = ENV["GIT_OWNER"]
-  git_project = ENV["GIT_PROJECT"]
-  @git_project = git_project
+  refCount = refCount + 1
+  puts "\e[90m=\e[0m" * 20
+  puts "\e[36mSCHEDULAR: #{refCount} refreshes so far...\e[0m"
+  #Retrieves data from API and formats it
+  puts "\e[34mGetting page 1 and 2 for open issues\e[0m"
+  firstResponse = RestClient.get uri
+  secondResponse = RestClient.get uri2
+  issuesPage1 = JSON.parse(firstResponse.body, symbolize_names: true)
+  issuesPage2 = JSON.parse(secondResponse.body, symbolize_names: true)
+  puts "\e[34mGetting page 1 and 2 for closed issues\e[0m"
+  thirdResponse = RestClient.get uriClosed1
+  fourthResponse = RestClient.get uriClosed2
+  cIssuesPage1 = JSON.parse(thirdResponse.body, symbolize_names: true)
+  cIssuesPage2 = JSON.parse(fourthResponse.body, symbolize_names: true)
+  puts "\e[34mGetting milestone data\e[0m"
+  mileResponse = RestClient.get uriMilestone
+  mileData = JSON.parse(mileResponse.body, symbolize_names: true)
+  #Stores open and closed issues respectively
+  currentOpenIssues = 0
+  currentClosedIssues = 0
 
-  projectName = git_project.capitalize
+  futureMiles = []
+  mileData.each do |cm|
+    dat = Date.parse cm[:due_on]
+    if dat > Date.today
+      futureMiles << dat
+    end
+  end
 
-  ## the endpoints for github open issues
-  uri = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=open&page=1&per_page=100&access_token=#{git_token}"
-  uri2 = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=open&page=2&per_page=100&access_token=#{git_token}"
-  ## the endpoints for github closed issues
-  uriClosed1 = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=closed&page=1&per_page=100&access_token=#{git_token}"
-  uriClosed2 = "https://api.github.com/repos/#{git_owner}/#{git_project}/issues?state=closed&page=2&per_page=100&access_token=#{git_token}"
-  #the endpoint for github milestone data
-  uriMilestone = "https://api.github.com/repos/#{git_owner}/#{git_project}/milestones?page=1&per_page=100&access_token=#{git_token}"
+  mileData.each do |vm|
+    dte = Date.parse vm[:due_on]
+    if dte == futureMiles.min
+      @currentMilestone = vm[:number]
+      @currMSTitle = vm[:title]
+    end
+  end
 
+  puts "\e[94mCurrent Milestone: #{@currentMilestone}\e[0m"
 
-    refCount = refCount + 1
-    puts "\e[90m=\e[0m" * 20
-    puts "\e[36mSCHEDULAR: #{refCount} refreshes so far...\e[0m"
-    #Retrieves data from API and formats it
-    puts "\e[34mGetting page 1 and 2 for open issues\e[0m"
-    firstResponse = RestClient.get uri
-    secondResponse = RestClient.get uri2
-    issuesPage1 = JSON.parse(firstResponse.body, symbolize_names: true)
-    issuesPage2 = JSON.parse(secondResponse.body, symbolize_names: true)
-    puts "\e[34mGetting page 1 and 2 for closed issues\e[0m"
-    thirdResponse = RestClient.get uriClosed1
-    fourthResponse = RestClient.get uriClosed2
-    cIssuesPage1 = JSON.parse(thirdResponse.body, symbolize_names: true)
-    cIssuesPage2 = JSON.parse(fourthResponse.body, symbolize_names: true)
-    puts "\e[34mGetting milestone data\e[0m"
-    mileResponse = RestClient.get uriMilestone
-    mileData = JSON.parse(mileResponse.body, symbolize_names: true)
-    #Stores open and closed issues respectively
-    currentOpenIssues = 0
-    currentClosedIssues = 0
+  mileData.length.times do |num|
+    if mileData[num][:number] == @currentMilestone
+      @mileDueStr = mileData[num][:due_on]
+    end
+  end
 
-    futureMiles = []
-    mileData.each do |cm|
-      dat = Date.parse cm[:due_on]
-      if dat > Date.today
-        futureMiles << dat
+  issuesPage1.length.times do |i|
+    if issuesPage1[i][:milestone] != nil
+      if issuesPage1[i][:milestone][:number] == @currentMilestone
+        currentOpenIssues = currentOpenIssues + 1
       end
     end
+  end
+  puts "\e[34mRetreiving Open Issues from page 1\e[0m"
 
-    mileData.each do |vm|
-      dte = Date.parse vm[:due_on]
-      if dte == futureMiles.min
-        @currentMilestone = vm[:number]
-        @currMSTitle = vm[:title]
+
+  issuesPage2.length.times do |x|
+    if issuesPage2[x][:milestone] != nil
+      if issuesPage2[x][:milestone][:number] == @currentMilestone
+        currentOpenIssues = currentOpenIssues + 1
       end
     end
+  end
+  puts "\e[34mRetreiving Open Issues from page 2\e[0m"
 
-    puts "\e[94mCurrent Milestone: #{@currentMilestone}\e[0m"
+  issClosedDate = []
 
-    mileData.length.times do |num|
-      if mileData[num][:number] == @currentMilestone
-        @mileDueStr = mileData[num][:due_on]
+  cIssuesPage1.length.times do |a|
+    if cIssuesPage1[a][:milestone] != nil
+      if cIssuesPage1[a][:milestone][:number] == @currentMilestone
+          currentClosedIssues = currentClosedIssues + 1
+          closedDateStr = cIssuesPage1[a][:closed_at]
+          closedDate = Date.parse closedDateStr
+          issClosedDate << closedDate.to_s
       end
     end
+  end
+  puts "\e[34mRetreiving Closed Issues from page 1\e[0m"
 
-    issuesPage1.length.times do |i|
-      if issuesPage1[i][:milestone] != nil
-        if issuesPage1[i][:milestone][:number] == @currentMilestone
-          currentOpenIssues = currentOpenIssues + 1
-        end
+
+  cIssuesPage2.length.times do |b|
+    if cIssuesPage2[b][:milestone] != nil
+      if cIssuesPage2[b][:milestone][:number] == @currentMilestone
+          currentClosedIssues = currentClosedIssues + 1
+          closedDateStr2 = cIssuesPage2[b][:closed_at]
+          closedDate2 = Date.parse closedDateStr2
+          issClosedDate << closedDate2.to_str
       end
     end
-    puts "\e[34mRetreiving Open Issues from page 1\e[0m"
+  end
+  puts "\e[34mRetreiving Closed Issues from page 2\e[0m"
 
 
-    issuesPage2.length.times do |x|
-      if issuesPage2[x][:milestone] != nil
-        if issuesPage2[x][:milestone][:number] == @currentMilestone
-          currentOpenIssues = currentOpenIssues + 1
-        end
-      end
-    end
-    puts "\e[34mRetreiving Open Issues from page 2\e[0m"
-
-    issClosedDate = []
-
-    cIssuesPage1.length.times do |a|
-      if cIssuesPage1[a][:milestone] != nil
-        if cIssuesPage1[a][:milestone][:number] == @currentMilestone
-            currentClosedIssues = currentClosedIssues + 1
-            closedDateStr = cIssuesPage1[a][:closed_at]
-            closedDate = Date.parse closedDateStr
-            issClosedDate << closedDate.to_s
-        end
-      end
-    end
-    puts "\e[34mRetreiving Closed Issues from page 1\e[0m"
-
-
-    cIssuesPage2.length.times do |b|
-      if cIssuesPage2[b][:milestone] != nil
-        if cIssuesPage2[b][:milestone][:number] == @currentMilestone
-            currentClosedIssues = currentClosedIssues + 1
-            closedDateStr2 = cIssuesPage2[b][:closed_at]
-            closedDate2 = Date.parse closedDateStr2
-            issClosedDate << closedDate2.to_str
-        end
-      end
-    end
-    puts "\e[34mRetreiving Closed Issues from page 2\e[0m"
-
-
-    all_issues = currentOpenIssues + currentClosedIssues
+  all_issues = currentOpenIssues + currentClosedIssues
 
 
   ### Chart configuration ##
