@@ -4,7 +4,7 @@
     });
 </script>
     <% git_token = ENV["GIT_TOKEN"] %>
-    <% git_project = "primex" %>
+    <% git_project = File.read('./assets/current_project.txt').gsub("\n",'') %>
 
     <% gitproject = "https://api.github.com/repos/mentallyfriendly/#{git_project}/contributors?&access_token=#{git_token}"%>
 
@@ -36,7 +36,7 @@
   <ul>
 
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div data-id="" data-view="Text" data-title="Primex" data-text="This is your shiny new dashboard." data-moreinfo="Protip: You can drag the widgets around!"></div>
+      <div data-id="title" data-view="Text" data-title="" data-text="" data-moreinfo="Protip: You can drag the widgets around!"></div>
     </li>
 
 
@@ -68,9 +68,34 @@
     </li>
 
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="2">
-      <div data-id="primex_burn" data-view ="LineChart" data-right-margin="10" data-bottom-margin="5"></div>
+      <div data-id="burn" data-view ="LineChart" data-right-margin="10" data-bottom-margin="5"></div>
     </li>
 
   </ul>
 
 </div>
+
+<% sprintgoals = File.read('./assets/sprint_goals')
+
+
+
+<form action="/sampletv" method="POST">
+  <h1> Sprint Goals </h1>
+  <input class="txtbox" placeholder="Goal 1" value="An Example" type="text" name="goal1"></input>
+  <input type="checkbox" name="ch1" value="ch1">
+  <input class="txtbox" placeholder="Goal 2" type="text" name="goal2"></input>
+  <input type="checkbox" name="ch2" value="ch2">
+  <input class="txtbox" placeholder="Goal 3" type="text" name="goal3"></input>
+  <input type="checkbox" name="ch3" value="ch3">
+  <input class="txtbox"placeholder="Goal 4" type="text" name="goal4"></input>
+  <input type="checkbox" name="ch4" value="ch4">
+  <input class="txtbox" placeholder="Goal 5" type="text" name="goal5"></input>
+  <input type="checkbox" name="ch5" value="ch5">
+  <h1> Check Ins </h1>
+  <input class="checkinform" placeholder="Tuesday" type="text" name="Tuesday" required maxlength="1"></input>
+  <input class="checkinform" placeholder="Thursday" type="text" name="Thursday" required maxlength="1"></input>
+  <input class="checkinform" placeholder="Tuesday2" type="text" name="Tuesday2" required maxlength="1"></input>
+  <input class="checkinform" placeholder="Friday" type="text" name="Friday" required maxlength="1"></input>
+  <input placeholder="Project" type="text" name="current_project"></input>
+  <p><input class="submit" type="submit"></p>
+</form>

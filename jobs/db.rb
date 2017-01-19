@@ -1,11 +1,11 @@
 require 'pg'
 
 db = PG.connect(dbname: 'dash')
-#db.exec("CREATE DATABASE dash;")
-#db.exec("USE dash;")
+# db.exec("CREATE DATABASE dash;")
+# db.exec("USE dash;")
 # db.exec("CREATE TABLE card_data(ProjectName varchar (50), GitRepo varchar (50), TenkProj varchar (50));")
-# db.prepare('statement1', 'insert into test (t_id, testname) values ($1, $2)')
-# db.exec_prepared('statement1', [ 1, 'testWill' ])
+# db.prepare('statement1', 'insert into card_data (projectname, gitrepo, tenkproj) values ($1, $2, $3)')
+# db.exec_prepared('statement1', [ 'Primex', 'primex', 'whataver' ])
 proj_nameArr = []
 proj_gitArr = []
 proj_tenkArr = []

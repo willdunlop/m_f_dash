@@ -1,5 +1,4 @@
 require 'dashing'
-
 require 'pg'
 
 require 'json'
@@ -7,6 +6,7 @@ require 'rest-client'
 
 configure do
   set :auth_token, 'NEW_TOKEN'
+  enable :traps
 
   helpers do
     def protected!
@@ -24,16 +24,19 @@ get '/sample' do
     erb :sprint_goals_edit
 end
 
+# project = File.read("./assets/current_project.rb")
+
 get '/sampletv' do
+
+
     request.path_info
     Sinatra::Application::THIS = "something"
-end
-
-get '/sampletv/:ea_p' do
+    erb :sampletv
 
 end
 
-post '/sample' do
+
+post "/sampletv" do
 
   goal1 = params[:goal1]
   goal2 = params[:goal2]
@@ -57,28 +60,24 @@ post '/sample' do
   ch3 = params[:ch3]
   ch4 = params[:ch4]
   ch5 = params[:ch5]
-<<<<<<< HEAD
-# puts ">>>>>>>>>>>>>>>>"
-# puts ch5
-# # puts params[:ch]
-# puts ">>>>>>>>>>>>>>>>"
-# checked = "#{params[:ch]}"
 
-=======
->>>>>>> dcd45744c0d16e69b6d894239f2d0563206109f9
+  current_project = params[:current_project]
 
   outcomes = "#{tuesday}, #{thursday}, #{tuesday2}, #{friday}"
   sprints = "#{goal1}, #{goal2}, #{goal3}, #{goal4}, #{goal5}"
   values = "#{ch1}, #{ch2}, #{ch3}, #{ch4}, #{ch5}"
-  File.open('./assets/sprint_goals.rb', 'w') { |file| file.write(sprints) }
-  File.open('./assets/values.rb', 'w') { |file| file.write(values)}
-  File.open('./assets/outcomes.rb', 'w') { |file| file.write(outcomes) }
-  File.open('./assets/tickboxes.rb', 'w') { |file| file.write(values) }
+  File.open("./assets/#{current_project}_sprint_goals.rb", 'w') { |file| file.write(sprints) }
+  File.open("./assets/#{current_project}_values.rb", 'w') { |file| file.write(values)}
+  File.open("./assets/#{current_project}_outcomes.rb", 'w') { |file| file.write(outcomes) }
+  File.open("./assets/current_project.txt", 'w') { |file| file.write("#{current_project}") }
 
-erb :sample
+erb :sampletv
 end
-
+#
 get '/projects' do
+
+  system('lsof -i :3030 -sTCP:LISTEN -t | xargs kill && dashing start')
+
   proj_nameArr = []
   proj_gitArr = []
   proj_tenkArr = []
@@ -92,12 +91,12 @@ get '/projects' do
       proj_tenkArr << row['tenkproj']
     end
   end
+
   @value = "A Value"
   # puts "Proj Name: #{proj_nameArr}"
-  erb :projects
-end
 
-post '/projects' do
+
+
   #params come through for each form
   #format them into hash array thing
   #write it to file
