@@ -1,14 +1,18 @@
-<form action="/sample" method="POST">
+<% current_project = File.read('./assets/current_project.txt').gsub("\n",'') %>
+<% sprintgoalsArr = File.read("./assets/data/#{current_project}_sprint_goals.rb").split(',') %>
+
+<form action="/sprint_goals_edit" method="POST">
+
   <h1> Sprint Goals </h1>
-  <input class="txtbox" placeholder="Goal 1" type="text" name="goal1"></input>
+  <input class="txtbox" placeholder="Goal 1" value= "<%=sprintgoalsArr[0]%>" type="text" name="goal1"></input>
   <input type="checkbox" name="ch1" value="ch1">
-  <input class="txtbox" placeholder="Goal 2" type="text" name="goal2"></input>
+  <input class="txtbox" placeholder="Goal 2" value="<%=sprintgoalsArr[1]%>" type="text" name="goal2"></input>
   <input type="checkbox" name="ch2" value="ch2">
-  <input class="txtbox" placeholder="Goal 3" type="text" name="goal3"></input>
+  <input class="txtbox" placeholder="Goal 3" value="<%=sprintgoalsArr[2]%>" type="text" name="goal3"></input>
   <input type="checkbox" name="ch3" value="ch3">
-  <input class="txtbox"placeholder="Goal 4" type="text" name="goal4"></input>
+  <input class="txtbox"placeholder="Goal 4" value="<%=sprintgoalsArr[3]%>" type="text" name="goal4"></input>
   <input type="checkbox" name="ch4" value="ch4">
-  <input class="txtbox" placeholder="Goal 5" type="text" name="goal5"></input>
+  <input class="txtbox" placeholder="Goal 5" value="<%=sprintgoalsArr[4]%>" type="text" name="goal5"></input>
   <input type="checkbox" name="ch5" value="ch5">
   <h1> Check Ins </h1>
   <input class="checkinform" placeholder="Tuesday" type="text" name="Tuesday" required maxlength="1"></input>
