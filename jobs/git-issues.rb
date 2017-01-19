@@ -67,26 +67,22 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
   futureMiles = []
   mileData.each do |cm|
     dat = Date.parse cm[:due_on]
-    if dat > Date.today
+    if dat >= Date.today
       futureMiles << dat
     end
   end
-
+  puts futureMiles
   mileData.each do |vm|
     dte = Date.parse vm[:due_on]
     if dte == futureMiles.min
       @currentMilestone = vm[:number]
       @currMSTitle = vm[:title]
+      @mileDueStr = vm[:due_on]
     end
   end
 
   puts "\e[94mCurrent Milestone: #{@currentMilestone}\e[0m"
 
-  mileData.length.times do |num|
-    if mileData[num][:number] == @currentMilestone
-      @mileDueStr = mileData[num][:due_on]
-    end
-  end
 
   issuesPage1.length.times do |i|
     if issuesPage1[i][:milestone] != nil
@@ -168,13 +164,14 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
    dateRange = dateRangeRev.reverse
 
 # Check Date of today and match it to array position in dateRange
-
+# puts "ALL ISS: #{all_issues}"
+# puts dateRange.length
   dateRange.length.times do |ed|
     if dateRange[ed] == Date.today.to_s
       @actual = Array.new(ed+1, all_issues)
     end
   end
-
+  # puts "ACTUAL: #{@actual}"
   dataPos = []
    #array containing closed date data array positions
    #puts "\e[31missClosedDate: #{issClosedDate}\e[0m"
