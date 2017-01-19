@@ -20,7 +20,7 @@ map Sinatra::Application.assets_prefix do
   run Sinatra::Application.sprockets
 end
 
-post '/sampletv' do
+post '/sprint_goals_edit' do
   goal1 = params[:goal1]
   goal2 = params[:goal2]
   goal3 = params[:goal3]
@@ -38,20 +38,14 @@ post '/sampletv' do
   tuesday2 = params[:Tuesday2]
   friday = params[:Friday]
 
-  ch1 = params[:ch1]
-  ch2 = params[:ch2]
-  ch3 = params[:ch3]
-  ch4 = params[:ch4]
-  ch5 = params[:ch5]
-
   current_project = File.read('./assets/current_project.txt').gsub("\n",'')
 
 outcomes = "#{tuesday}, #{thursday}, #{tuesday2}, #{friday}"
   sprints = "#{goal1}, #{goal2}, #{goal3}, #{goal4}, #{goal5}"
   values = "#{ch1}, #{ch2}, #{ch3}, #{ch4}, #{ch5}"
-  File.open("./assets/#{current_project}_sprint_goals.rb", 'w') { |file| file.write(sprints) }
-  File.open("./assets/#{current_project}_values.rb", 'w') { |file| file.write(values)}
-  File.open("./assets/#{current_project}_outcomes.rb", 'w') { |file| file.write(outcomes) }
+  File.open("./assets/data/#{current_project}_sprint_goals.rb", 'w') { |file| file.write(sprints) }
+  File.open("./assets/data/#{current_project}_values.rb", 'w') { |file| file.write(values)}
+  File.open("./assets/data/#{current_project}_outcomes.rb", 'w') { |file| file.write(outcomes) }
   erb :sampletv
 end
 

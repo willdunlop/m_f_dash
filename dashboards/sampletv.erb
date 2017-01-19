@@ -82,7 +82,6 @@
 </form> -->
 
 <% current_project = File.read('./assets/current_project.txt').gsub("\n",'') %>
-<% sprintgoalsArr = File.read("./assets/#{current_project}_sprint_goals.rb").split(',') %>
 
 <form action="/sampletv" method="POST">
   <input id="projectField" placeholder="Project" type="text" name="current_project"></input>

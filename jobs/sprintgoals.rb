@@ -1,14 +1,14 @@
 
-SCHEDULER.every '20s' do
+SCHEDULER.every '10s' do
 
   current_project = File.read('./assets/current_project.txt').gsub("\n",'')
   #puts "CURRENT PROJECT #{current_project}"
-  sprintarray = File.read("./assets/#{current_project}_sprint_goals.rb").split(',')
+  sprintarray = File.read("./assets/data/#{current_project}_sprint_goals.rb").split(',')
   #puts "SPRINT ARRAY #{sprintarray}"
-  checks = File.read("./assets/#{current_project}_values.rb").split(',')
+  checks = File.read("./assets/data/#{current_project}_values.rb").split(',')
   checksarray = []
   checks.each do |ea|
-    if ea == " "
+    if ea == " " || ea == ""
       checksarray.push("")
     else
       checksarray.push("✓")

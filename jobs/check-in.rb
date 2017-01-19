@@ -4,7 +4,7 @@ require 'pry'
 SCHEDULER.every '10s', :first_in => 0 do |job|
 
   current_project = File.read('./assets/current_project.txt').gsub("\n",'')
-  outcomes = File.read("./assets/#{current_project}_outcomes.rb").gsub(/\s+/, "")
+  outcomes = File.read("./assets/data/#{current_project}_outcomes.rb").gsub(/\s+/, "")
   #puts outcomes
   outcomeArray = outcomes.split(",")
   colours = []

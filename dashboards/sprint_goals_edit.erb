@@ -1,10 +1,11 @@
 <% current_project = File.read('./assets/current_project.txt').gsub("\n",'') %>
-<% sprintgoalsArr = File.read("./assets/#{current_project}_sprint_goals.rb").split(',') %>
+<% sprintgoalsArr = File.read("./assets/data/#{current_project}_sprint_goals.rb").split(',') %>
 
-<form action="/sampletv" method="POST">
+<form action="/sprint_goals_edit" method="POST">
+
   <h1> Sprint Goals </h1>
   <input class="txtbox" placeholder="Goal 1" value= "<%=sprintgoalsArr[0]%>" type="text" name="goal1"></input>
-  <input type="radio" name="ch1" value="ch1">
+  <input type="checkbox" name="ch1" value="ch1">
   <input class="txtbox" placeholder="Goal 2" value="<%=sprintgoalsArr[1]%>" type="text" name="goal2"></input>
   <input type="checkbox" name="ch2" value="ch2">
   <input class="txtbox" placeholder="Goal 3" value="<%=sprintgoalsArr[2]%>" type="text" name="goal3"></input>
