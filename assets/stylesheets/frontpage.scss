@@ -1,15 +1,66 @@
-.proj_card{
-  color: rgb(0,0,0);
-  width: 500px;
-  height: 300px;
-  background-image: url("projCard.jpg");
-  border: solid;
+.projectForm {
+  margin: 20px auto 0 auto;
+  width: 300px;
+  height: 30px;
+
 }
-  .proj_link {
-    display:block;
-    width:500px;
-    height:300px;
-    text-align: center;
-    font-family: 'Permanent Marker', cursive;
-    font-size: 60px;
+
+#projectField {
+  float: left;
+  background: #273141;
+  border: solid rgb(0,255,255) thin;
+  text-align: center;
+  color: rgb(0,255,255);
+  margin-right: 5px;
+  height: 30px;
+  width: 225px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+
+}
+   ::-webkit-input-placeholder{
+     color: rgba(0,255,255,0.28);
+   }
+
+.psubmit{
+  height: 32px;
+  background: #273141;
+  border: solid rgb(0,255,255) thin;
+  text-align: center;
+  color: rgb(0,255,255);
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+
+
+}
+  .psubmit:hover{
+    background: rgb(0,255,255);
+    border: solid #273141 thin;
+    color: #273141;
+
   }
+
+  #editButtonForm{
+    width: 300px;
+    margin: 0 auto 0 auto;
+
+  }
+  #editButton{
+    height: 32px;
+    width: 300px;
+    background: rgb(0,255,255);
+    border: solid #273141 thin;
+    color: #273141;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    margin: 20px auto 0 auto;
+
+
+  }
+    #editButton:hover{
+      background: #273141;
+      border: solid rgb(0,255,255) thin;
+      color: rgb(0,255,255);
+
+    }

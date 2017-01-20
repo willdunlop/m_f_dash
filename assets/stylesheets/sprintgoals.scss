@@ -1,3 +1,56 @@
 .yes {
   background-color: green;
 }
+
+.sprintForm{
+  margin: 20px auto 0 auto;
+  width: 300px;
+  height: 500px;
+  padding:2%;
+  border: solid rgb(0,255,255) thick;
+
+}
+
+.sprintInput{
+  background: #273141;
+  border: solid rgb(0,255,255) thin;
+  text-align: center;
+  color: rgb(0,255,255);
+  margin-right: 5px;
+  height: 25px;
+  width: 250px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+.sprintCheck{
+  width: 25px;
+  height: 25px;
+  background: #273141;
+  border: solid rgb(0,255,255) thin;
+  color: rgb(0,255,255);
+
+}
+
+.submit{
+  height: 32px;
+  width: 250px;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  margin: 20px auto 0 auto;
+  background: rgb(0,255,255);
+  border: solid #273141 thin;
+  color: #273141;
+
+}
+  .submit:hover{
+    background: rgb(0,255,255);
+    border: solid #273141 thin;
+    color: #273141;
+    background: #273141;
+    border: solid rgb(0,255,255) thin;
+    color: rgb(0,255,255);
+
+
+  }

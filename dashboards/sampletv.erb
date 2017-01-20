@@ -1,6 +1,10 @@
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+
 <script type='text/javascript'>
     $(function() {
-      Dashing.gridsterLayout('[{"col":1,"row":1,"size_x":2,"size_y":1},{"col":1,"row":2,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":1,"size_y":1},{"col":1,"row":4,"size_x":1,"size_y":1},{"col":2,"row":2,"size_x":1,"size_y":2},{"col":3,"row":3,"size_x":1,"size_y":1},{"col":4,"row":3,"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":2,"size_y":2}]')
+      Dashing.gridsterLayout('[{"col":1,"row":1,"size_x":2,"size_y":1},{"col":1,"row":2,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":1,"size_y":1},{"col":1,"row":3,"size_x":1,"size_y":1},{"col":2,"row":2,"size_x":1,"size_y":2},{"col":3,"row":3,"size_x":1,"size_y":1},{"col":4,"row":3,"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":2,"size_y":2}]')
     });
 </script>
 
@@ -10,7 +14,9 @@
     <% gitmembersJson = [] %>
 
     <% gitteams = "https://api.github.com/repos/mentallyfriendly/#{git_project}/teams?&access_token=#{git_token}"%>
+
     <% gitResponse1 = RestClient.get gitteams%>
+
   <!-- #formats it as a json -->
     <% gitteamsJson = JSON.parse(gitResponse1.body, symbolize_names: true) %>
 
@@ -29,7 +35,7 @@
         <% hash.merge!(login: member[:login], avatar: member[:avatar_url]) %>
         <% hashArr << hash %>
 
-        <%end %>
+        <% end %>
       <% end %>
 
       <div class="members">
@@ -51,7 +57,6 @@
 
 
 <% content_for :title do %>1080p dashboard<% end %>
-<%= @this %>
 <div class="gridster">
   <ul>
 
@@ -103,14 +108,18 @@
 
 <% current_project = File.read('./assets/current_project.txt').gsub("\n",'') %>
 
-<form action="/sampletv" method="POST">
+<form class="projectForm" action="/sampletv" method="POST">
   <input id="projectField" placeholder="Project" type="text" name="current_project"></input>
 
-  <p><input class="submit" type="submit"></p>
+  <input class="psubmit" type="submit">
 </form>
 
-<script>
+<form id="editButtonForm"method="get" action="/sprint_goals_edit">
+    <button id="editButton" type="submit">Edit</button>
+</form>
 
+
+<script>
   var projy = document.getElementById('projectField');
   projy.addEventListener('change', function(){
       var val = projy.value;

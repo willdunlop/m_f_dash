@@ -7,7 +7,7 @@ require 'rest-client'
 configure do
   set :auth_token, 'NEW_TOKEN'
   enable :traps
-
+  #enable :show_exceptions
   helpers do
     def protected!
       # Put any authentication code you want in here.
