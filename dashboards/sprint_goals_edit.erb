@@ -1,6 +1,6 @@
 <% current_project = File.read('./assets/current_project.txt').gsub("\n",'') %>
+<%if File.file?("./assets/data/#{current_project}_sprint_goals.rb") %>
 <% sprintgoalsArr = File.read("./assets/data/#{current_project}_sprint_goals.rb").split(',') %>
-
 <form class="sprintForm" action="/sprint_goals_edit" method="POST">
 
   <h1> Sprint Goals </h1>
@@ -15,6 +15,22 @@
   <input class="sprintInput" placeholder="Goal 5" value="<%=sprintgoalsArr[4]%>" type="text" name="goal5"></input>
   <input class="sprintCheck" type="checkbox" name="ch5" value="ch5">
   <h1> </h1>
+  <%else%>
+  <form class="sprintForm" action="/sprint_goals_edit" method="POST">
+
+    <h1> Sprint Goals </h1>
+    <input class="sprintInput" placeholder="Goal 1" type="text" name="goal1"></input>
+    <input class="sprintCheck" type="checkbox" name="ch1" value="ch1">
+    <input class="sprintInput" placeholder="Goal 2" type="text" name="goal2"></input>
+    <input class="sprintCheck" type="checkbox" name="ch2" value="ch2">
+    <input class="sprintInput" placeholder="Goal 3" type="text" name="goal3"></input>
+    <input class="sprintCheck" type="checkbox" name="ch3" value="ch3">
+    <input class="sprintInput"placeholder="Goal 4" type="text" name="goal4"></input>
+    <input class="sprintCheck" type="checkbox" name="ch4" value="ch4">
+    <input class="sprintInput" placeholder="Goal 5" type="text" name="goal5"></input>
+    <input class="sprintCheck" type="checkbox" name="ch5" value="ch5">
+    <h1> </h1>
+  <%end%>
   <h1> Check Ins </h1>
 
   <div class="ciContainer">
