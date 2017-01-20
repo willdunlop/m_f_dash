@@ -1,1 +1,1 @@
-change,       this,       for,       dat,       primex
+change, this, for, dat, primex

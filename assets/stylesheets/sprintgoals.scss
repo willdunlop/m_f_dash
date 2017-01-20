@@ -7,7 +7,9 @@
   width: 300px;
   height: 500px;
   padding:2%;
+  // padding-left: 50px;
   border: solid rgb(0,255,255) thick;
+  background-color: #273141;
 
 }
 
@@ -53,4 +55,22 @@
     color: rgb(0,255,255);
 
 
+  }
+
+  .checkinInput {
+    background: #273141;
+    border: solid rgb(0,255,255) thin;
+    text-align: center;
+    color: rgb(0,255,255);
+    margin-right: 5px;
+    height: 25px;
+    width: 25px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+  }
+
+  .ciContainer {
+    margin: 0 auto 0 auto;
+    width: 150px;
+    height: 30px;
   }
