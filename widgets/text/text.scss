@@ -16,7 +16,34 @@ $moreinfo-color:    rgba(0, 255, 0, 0.3);
   font-weight: lighter;
   color: rgba(0, 255, 0, 0.5);
 
+.open {
+  color: #69F090;
+  font-size: 45px;
+}
 
+.closed {
+  color: #FE7171;
+  font-size: 45px;
+}
+
+.project-title {
+  color: #00DBC0;
+  font-size: 180px;
+}
+
+.issueno {
+  font-family: MaisonNeueMono;
+  font-size: 70px;
+}
+
+.project-sprint {
+  font-family: MaisonNeueMono, sans-serif;
+  font-size: 50px;
+  color: white;
+}
+.updatedhide {
+  display: none;;
+}
 
   .title {
     color: $title-color;
@@ -27,7 +54,8 @@ $moreinfo-color:    rgba(0, 255, 0, 0.3);
   }
 
   .updated-at {
-    color: rgba(255, 255, 255, 0.7);
+    color: white;
+    opacity: 0.3;
   }
 
 

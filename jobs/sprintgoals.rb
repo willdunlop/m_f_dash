@@ -14,7 +14,8 @@ SCHEDULER.every '10s' do
       checksarray.push("✓")
     end
 end
+colour_sprintgoals = {colour: "sprintgoals"}
 sprintgoals = sprintarray.zip(checksarray).map{|s, c| {label: s, value: c}}
 #puts sprintgoals
-send_event('sprintgoals', { items: sprintgoals })
+send_event('sprintgoals', { items: sprintgoals, colour: colour_sprintgoals })
 end

@@ -5,9 +5,14 @@ $background-color:  #000;
 $value-color:       rgb(255,0,0);
 
 $title-color:       rgba(100, 100, 255, 1);
-$label-color:       rgba(255,0,0,0.6);
+// $label-color:       rgba(255,0,0,0.6);
 $moreinfo-color:    rgba(255, 255, 255, 0.7);
+$label-color:       white;
 
+@font-face { font-family: MaisonNeue; font-weight: bold; src: url('/MaisonNeue/MaisonNeue-Bold.ttf'); }
+@font-face { font-family: MaisonNeueMedium; font-weight: medium; src: url('/MaisonNeue/MaisonNeue-Medium.ttf');}
+@font-face { font-family: MaisonNeueMono; font-weight: medium; src: url('/MaisonNeue/maisonneuemono.ttf');}
+@font-face { font-family: MaisonNeueMonoItalic; src: url('/MaisonNeue/maisonneuemonoitalic.ttf');}
 // ----------------------------------------------------------------------------
 // Widget-list styles
 // ----------------------------------------------------------------------------
@@ -18,6 +23,12 @@ $moreinfo-color:    rgba(255, 255, 255, 0.7);
 
   .title {
     color: $title-color;
+  }
+
+  .sprintgoals {
+    font-size: 50px;
+    color: #00DBC0;
+    padding-bottom: 40px;
   }
 
   ol, ul {
@@ -32,14 +43,18 @@ $moreinfo-color:    rgba(255, 255, 255, 0.7);
 
   li {
     margin-bottom: 5px;
+    padding: 10px;
   }
 
   .list-nostyle {
     list-style: none;
   }
 
-  .label {
+.label {
     color: $label-color;
+    font-size: 20px;
+    font-family: MaisonNeueMono;
+    margin-top: 15px;
   }
 
   .value {
@@ -50,7 +65,8 @@ $moreinfo-color:    rgba(255, 255, 255, 0.7);
   }
 
   .updated-at {
-    color: rgba(0, 0, 0, 0.3);
+    color: white;
+    opacity: 0.3;
   }
 
   .more-info {

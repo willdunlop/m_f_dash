@@ -233,9 +233,15 @@ dataPos = dataPos.sort.reverse
           pointRadius: 0
         }
       ]
+
+      colour_openiss = {colour: "open"}
+      colour_closediss= {colour: "closed"}
+      colour_title = {colour: "project-title"}
+      colour_sprint = {colour: "project-sprint"}
+      updatedhide = {updatedat: "updatedhide"}
     ## Push the most recent point value
     send_event('burn', { labels: dateRange, datasets: data })
-    send_event('open_iss', {text: currentOpenIssues })
-    send_event('closed_iss', {text: currentClosedIssues })
-    send_event('title', {text:  @currMSTitle, title: projectName})
+    send_event('open_iss', {text: currentOpenIssues, colour: colour_openiss})
+    send_event('closed_iss', {text: currentClosedIssues, colour: colour_closediss })
+    send_event('title', {ctitle:  @currMSTitle, title: projectName, colour_title: colour_title, colour_sprint: colour_sprint, updatedhide: updatedhide })
 end # SCHEDULER
