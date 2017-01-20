@@ -16,6 +16,8 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
      colours.push('orange')
    elsif current_outcome == "D"|| current_outcome == "d"
      colours.push('red')
+   elsif current_outcome == nil
+     colours.push('grey')
   else
     colours.push('grey')
   end

@@ -8,7 +8,17 @@ $background-color:  #000;
 // ----------------------------------------------------------------------------
 .widget-clock {
 
-  background-color: $background-color;
+  background-color: white;
   color: rgba(255,0,0,0.6)
 
+
+}
+
+.date {
+  font-family: MaisonNeueMono;
+  background-color: #00DBC0;
+  color: black;
+  margin-left: 40px;
+  margin-right: 40px;
+  padding-top: 5px;
 }

@@ -5,6 +5,12 @@
 // ----------------------------------------------------------------------------
 // Sass declarations
 // ----------------------------------------------------------------------------
+
+@font-face { font-family: MaisonNeue; font-weight: bold; src: url('./MaisonNeue/MaisonNeue-Bold.ttf'); }
+@font-face { font-family: MaisonNeueMedium; font-weight: medium; src: url('./MaisonNeue/MaisonNeue-Medium.ttf');}
+@font-face { font-family: MaisonNeueMono; font-weight: medium; src: url('./MaisonNeue/maisonneuemono.ttf');}
+@font-face { font-family: MaisonNeueMonoItalic; font-weight: medium; src: url('./MaisonNeue/maisonneuemonoitalic.ttf');}
+
 $background-color: #222;
 $text-color: #fff;
 
@@ -62,35 +68,35 @@ html {
   position: absolute;
   z-index: 1;
   float: left;
-  // width: 70px;
+  margin-left: 0.8vw;
+  margin-top: 0.8vw;
+}
+
+.members2{
+  position: absolute;
+  float: right;
+  margin-left: 5.6vw;
+  margin-top: 0.8vw;
 }
 
 .member_img {
   border-radius: 50%;
-  height: 8vh;
-  width: 8vh;
+  height: 4vw;
+  width: 4vw;
 }
 .member_name {
   font-size: 14px;
   text-align: center;
 }
-// .contrib_commit {
-//   font-size: 11px;
-//   text-align: center;
-// }
 
-.members2{
-  position: absolute;
-  // z-index:1;
-  float: right;
-  margin-left: 4.5vw;
-}
+
 body {
   margin: 0;
   background-color: $background-color;
   font-size: 20px;
   color: $text-color;
-  font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  // font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: MaisonNeue, sans-serif;
 }
 
 b, strong {
@@ -140,7 +146,7 @@ h1 {
   text-align: center;
   font-size: 30px;
   font-weight: 400;
-  color: #42f4dc;
+  color: #00DBC0;
 
 }
 h2 {
@@ -169,10 +175,11 @@ h3 {
   position: absolute;
   left: 0;
   top: 0;
+  color: white;
   opacity: 0.1;
   font-size: 275px;
   text-align: center;
-  margin-top: 82px;
+  margin-top: 35px;
 }
 
 .list-nostyle {
@@ -195,6 +202,7 @@ h3 {
   height: inherit;
   display: table-cell;
   vertical-align: middle;
+  background-color: #273141;
 }
 .status-warning {
   background-color: $background-warning-color-1;
@@ -242,6 +250,7 @@ h3 {
   bottom: 12px;
   left: 0;
   right: 0;
+  font-family: MaisonNeueMono;
 }
 
 #save-gridster {
